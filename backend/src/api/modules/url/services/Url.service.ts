@@ -29,7 +29,7 @@ export default class UrlService extends BaseService<UrlEncodeRequestType> {
 
     if (!urlEntry) {
       const id = await this.urlProvider.getNextId();
-      const shortPath = StringUtils.generateShortPath();
+      const shortPath = StringUtils.generateShortPath(AppSettings.UrlShortenerLength);
 
       urlEntry = {
         id,

@@ -23,7 +23,6 @@ export interface ResultDto {
   data: {
     message: string;
     data: unknown;
-    accessToken: string | undefined;
   };
 }
 

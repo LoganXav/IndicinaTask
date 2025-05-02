@@ -45,7 +45,6 @@ export class Result implements IResult {
       data: {
         message: this.message,
         data: this.result,
-        accessToken: this.token,
       },
     };
   }

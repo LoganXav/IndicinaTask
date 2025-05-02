@@ -14,9 +14,9 @@ export function ValidateRequestBody(schema: z.ZodObject<any, any>) {
         const errorMessages = error.errors.map((issue: any) => ({
           message: issue.message,
         }));
-        res.status(HttpStatusCodeEnum.BAD_REQUEST).json({ status: ERROR, details: errorMessages });
+        res.status(HttpStatusCodeEnum.BAD_REQUEST).json({ status: ERROR, statusCode: HttpStatusCodeEnum.BAD_REQUEST, details: errorMessages });
       } else {
-        res.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({ status: ERROR, message: INTERNAL_SERVER_ERROR });
+        res.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({ status: ERROR, statusCode: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR, message: INTERNAL_SERVER_ERROR });
       }
     }
   };

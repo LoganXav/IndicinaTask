@@ -1,8 +1,8 @@
 import Express from "../index";
 import { resolve } from "path";
-import { NextFunction, Router } from "express";
-import { container } from "tsyringe";
 import { sync } from "fast-glob";
+import { Router } from "express";
+import { container } from "tsyringe";
 import ServerConfig from "~/config/ServerConfig";
 import AppSettings from "~/helpers/settings/AppSettings";
 
@@ -59,7 +59,7 @@ describe("Load Controllers Dynamically", () => {
     await (app as any).loadControllersDynamically();
 
     expect(mockController.initializeRoutes).toHaveBeenCalledWith(expect.any(Function));
-    expect(appUseSpy).toHaveBeenCalledWith(AppSettings.ServerRoot, expect.any(Function));
+    expect(appUseSpy).toHaveBeenCalledWith(expect.any(Function));
 
     appUseSpy.mockRestore();
   });

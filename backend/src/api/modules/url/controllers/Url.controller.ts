@@ -21,31 +21,31 @@ export default class UrlController extends BaseController {
 
   encode: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
     return this.handleResult(res, next, this.urlService.execute(req.body), {
-      [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.TEXT_PLAIN,
+      [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
 
   decode: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
     return this.handleResult(res, next, this.urlService.decode(req.body), {
-      [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.TEXT_PLAIN,
+      [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
 
   statistic: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
     return this.handleResult(res, next, this.urlService.statistic(), {
-      [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.TEXT_PLAIN,
+      [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
 
   list: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
     return this.handleResult(res, next, this.urlService.list(), {
-      [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.TEXT_PLAIN,
+      [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
 
   redirect: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
     return this.handleResult(res, next, this.urlService.redirect(), {
-      [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.TEXT_PLAIN,
+      [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
 
