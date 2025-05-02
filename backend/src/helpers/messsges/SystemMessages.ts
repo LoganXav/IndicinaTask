@@ -16,3 +16,4 @@ export const VALIDATION_ERROR = "Validation Error";
 export const URL_ALREADY_EXISTS = "Url already exists";
 export const URL_NOT_FOUND = "Url not found";
 export const URL_ENCODED_SUCCESSFULLY = "Url encoded successfully";
+export const URL_DECODED_SUCCESSFULLY = "Url decoded successfully";

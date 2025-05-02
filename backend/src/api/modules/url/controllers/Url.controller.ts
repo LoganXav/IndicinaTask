@@ -3,11 +3,11 @@ import { autoInjectable } from "tsyringe";
 import UrlService from "~/api/modules/url/services/Url.service";
 import { HttpHeaderEnums } from "~/helpers/enums/HttpHeaderEnums";
 import { HttpMethodEnums } from "~/helpers/enums/HttpMethodEnums";
-import { urlEncodeRequestSchema } from "../validators/Url.schema";
 import BaseController from "~/api/modules/base/controllers/Base.controller";
 import { HttpContentTypeEnums } from "~/helpers/enums/HttpContentTypeEnums";
 import { ValidateRequestBody } from "~/api/shared/middleware/ValidateRequestBody";
 import { EntryPointHandler, IRequest, IResponse, INextFunction } from "~/types/Http";
+import { urlDecodeRequestSchema, urlEncodeRequestSchema } from "~/api/modules/url/validators/Url.schema";
 
 @autoInjectable()
 export default class UrlController extends BaseController {
@@ -26,7 +26,7 @@ export default class UrlController extends BaseController {
   };
 
   decode: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
-    return this.handleResult(res, next, this.urlService.decode(), {
+    return this.handleResult(res, next, this.urlService.decode(req.body), {
       [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.TEXT_PLAIN,
     });
   };
@@ -62,7 +62,7 @@ export default class UrlController extends BaseController {
     this.addRoute({
       method: HttpMethodEnums.POST,
       path: "/api/decode",
-      handlers: [this.decode],
+      handlers: [ValidateRequestBody(urlDecodeRequestSchema), this.decode],
       description: "Decode a Short URL to a Long URL",
     });
 
