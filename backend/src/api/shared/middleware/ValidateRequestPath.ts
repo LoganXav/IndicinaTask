@@ -6,12 +6,9 @@ import { ERROR, INTERNAL_SERVER_ERROR } from "~/helpers/messsges/SystemMessages"
 export function ValidateRequestPath(schema: z.ZodObject<any, any>) {
   return async (req: IRequest, res: IResponse, next: INextFunction) => {
     try {
-      console.log(req.params);
-
       const validatedData = await schema.parseAsync(req.params);
-
-      console.log(validatedData);
       req.params = validatedData;
+
       next();
     } catch (error) {
       if (error instanceof ZodError) {

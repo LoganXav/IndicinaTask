@@ -29,4 +29,8 @@ export default class UrlProvider {
   public async getByShortPath(shortPath: string): Promise<UrlEntry | undefined> {
     return UrlProvider.store.get(shortPath);
   }
+
+  public async getAll(): Promise<UrlEntry[]> {
+    return Array.from(UrlProvider.store.values());
+  }
 }

@@ -9,7 +9,7 @@ import { ILoggingDriver } from "~/infrastructure/internal/logger/ILoggingDriver"
 import { BadRequestError } from "~/infrastructure/internal/exceptions/BadRequestError";
 import { LoggingProviderFactory } from "~/infrastructure/internal/logger/LoggingProviderFactory";
 import { UrlDecodeRequestType, UrlEncodeRequestType, UrlStatisticRequestType } from "~/api/modules/url/validators/Url.schema";
-import { ERROR, SUCCESS, URL_DECODED_SUCCESSFULLY, URL_ENCODED_SUCCESSFULLY, URL_NOT_FOUND, URL_PATH_NOT_FOUND, URL_STATISTIC_FETCHED_SUCCESSFULLY } from "~/helpers/messsges/SystemMessages";
+import { ERROR, SUCCESS, URL_DECODED_SUCCESSFULLY, URL_ENCODED_SUCCESSFULLY, URL_LIST_FETCHED_SUCCESSFULLY, URL_NOT_FOUND, URL_PATH_NOT_FOUND, URL_STATISTIC_FETCHED_SUCCESSFULLY } from "~/helpers/messsges/SystemMessages";
 @autoInjectable()
 export default class UrlService extends BaseService<UrlEncodeRequestType> {
   static serviceName = "UrlService";
@@ -82,7 +82,8 @@ export default class UrlService extends BaseService<UrlEncodeRequestType> {
   }
 
   public async list(): Promise<IResult> {
-    this.result.setMessage("UrlService", HttpStatusCodeEnum.SUCCESS);
+    const urlEntries = await this.urlProvider.getAll();
+    this.result.setData(SUCCESS, HttpStatusCodeEnum.SUCCESS, URL_LIST_FETCHED_SUCCESSFULLY, urlEntries);
     return this.result;
   }
 
