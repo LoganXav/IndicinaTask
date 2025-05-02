@@ -1,7 +1,8 @@
 import cors from "cors";
 import helmet from "helmet";
-import express, { Express as Server } from "express";
+import { errorHandler } from "~/infrastructure/internal/exceptions/ErrorHandler";
 import { ILoggingDriver } from "~/infrastructure/internal/logger/ILoggingDriver";
+import express, { NextFunction, Request, Response, Express as Server } from "express";
 import { LoggingProviderFactory } from "~/infrastructure/internal/logger/LoggingProviderFactory";
 
 export default class Express {
@@ -11,6 +12,7 @@ export default class Express {
     this.app = express();
     this.loggingProvider = LoggingProviderFactory.build();
     this.loadMiddlewares();
+    this.loadErrorHandler();
   }
 
   private loadMiddlewares(): void {
@@ -40,6 +42,17 @@ export default class Express {
         .catch((error) => {
           return reject(error);
         });
+    });
+  }
+
+  private loadErrorHandler(): void {
+    this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+      this.loggingProvider.error(err.message);
+      next(err);
+    });
+
+    this.app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+      errorHandler.handleError(err, res);
     });
   }
 }
