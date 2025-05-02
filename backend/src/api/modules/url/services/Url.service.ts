@@ -8,8 +8,8 @@ import { HttpStatusCodeEnum } from "~/helpers/enums/HttpStatusCodeEnums";
 import { ILoggingDriver } from "~/infrastructure/internal/logger/ILoggingDriver";
 import { BadRequestError } from "~/infrastructure/internal/exceptions/BadRequestError";
 import { LoggingProviderFactory } from "~/infrastructure/internal/logger/LoggingProviderFactory";
-import { UrlDecodeRequestType, UrlEncodeRequestType } from "~/api/modules/url/validators/Url.schema";
-import { ERROR, SUCCESS, URL_DECODED_SUCCESSFULLY, URL_ENCODED_SUCCESSFULLY, URL_NOT_FOUND } from "~/helpers/messsges/SystemMessages";
+import { UrlDecodeRequestType, UrlEncodeRequestType, UrlStatisticRequestType } from "~/api/modules/url/validators/Url.schema";
+import { ERROR, SUCCESS, URL_DECODED_SUCCESSFULLY, URL_ENCODED_SUCCESSFULLY, URL_NOT_FOUND, URL_PATH_NOT_FOUND, URL_STATISTIC_FETCHED_SUCCESSFULLY } from "~/helpers/messsges/SystemMessages";
 @autoInjectable()
 export default class UrlService extends BaseService<UrlEncodeRequestType> {
   static serviceName = "UrlService";
@@ -24,7 +24,6 @@ export default class UrlService extends BaseService<UrlEncodeRequestType> {
 
   public async execute(args: UrlEncodeRequestType): Promise<IResult> {
     const { url } = args;
-
     let urlEntry = await this.urlProvider.getByUrl(url);
 
     if (!urlEntry) {
@@ -49,7 +48,6 @@ export default class UrlService extends BaseService<UrlEncodeRequestType> {
   public async decode(args: UrlDecodeRequestType): Promise<IResult> {
     try {
       const { shortUrl } = args;
-
       const urlEntry = await this.urlProvider.getByShortUrl(shortUrl);
 
       if (!urlEntry) {
@@ -65,9 +63,22 @@ export default class UrlService extends BaseService<UrlEncodeRequestType> {
     }
   }
 
-  public async statistic(): Promise<IResult> {
-    this.result.setMessage("UrlService", HttpStatusCodeEnum.SUCCESS);
-    return this.result;
+  public async statistic(args: UrlStatisticRequestType): Promise<IResult> {
+    try {
+      const { path } = args;
+      const urlEntry = await this.urlProvider.getByShortPath(path);
+
+      if (!urlEntry) {
+        throw new BadRequestError(URL_PATH_NOT_FOUND);
+      }
+
+      this.result.setData(SUCCESS, HttpStatusCodeEnum.SUCCESS, URL_STATISTIC_FETCHED_SUCCESSFULLY, urlEntry);
+      return this.result;
+    } catch (error: any) {
+      this.loggingProvider.error(error);
+      this.result.setError(ERROR, error.httpStatusCode, error.description);
+      return this.result;
+    }
   }
 
   public async list(): Promise<IResult> {

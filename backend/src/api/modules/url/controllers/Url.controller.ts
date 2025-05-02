@@ -6,8 +6,9 @@ import { HttpMethodEnums } from "~/helpers/enums/HttpMethodEnums";
 import BaseController from "~/api/modules/base/controllers/Base.controller";
 import { HttpContentTypeEnums } from "~/helpers/enums/HttpContentTypeEnums";
 import { ValidateRequestBody } from "~/api/shared/middleware/ValidateRequestBody";
+import { ValidateRequestPath } from "~/api/shared/middleware/ValidateRequestPath";
 import { EntryPointHandler, IRequest, IResponse, INextFunction } from "~/types/Http";
-import { urlDecodeRequestSchema, urlEncodeRequestSchema } from "~/api/modules/url/validators/Url.schema";
+import { urlDecodeRequestSchema, urlEncodeRequestSchema, urlStatisticRequestSchema } from "~/api/modules/url/validators/Url.schema";
 
 @autoInjectable()
 export default class UrlController extends BaseController {
@@ -32,7 +33,7 @@ export default class UrlController extends BaseController {
   };
 
   statistic: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
-    return this.handleResult(res, next, this.urlService.statistic(), {
+    return this.handleResult(res, next, this.urlService.statistic(req.params), {
       [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
@@ -68,8 +69,8 @@ export default class UrlController extends BaseController {
 
     this.addRoute({
       method: HttpMethodEnums.GET,
-      path: "/api/statistic:url",
-      handlers: [this.statistic],
+      path: "/api/statistic/:path",
+      handlers: [ValidateRequestPath(urlStatisticRequestSchema), this.statistic],
       description: "Get the statistic of a Short URL",
     });
 
