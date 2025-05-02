@@ -7,6 +7,8 @@ import { IRouter } from "~/types/Http";
 import { TypeParser } from "~/utils/TypeUtils";
 import ServerConfig from "~/config/ServerConfig";
 import AppSettings from "~/helpers/settings/AppSettings";
+import { ERROR } from "~/helpers/messsges/SystemMessages";
+import { HttpStatusCodeEnum } from "~/helpers/enums/HttpStatusCodeEnums";
 import BaseController from "~/api/modules/base/controllers/Base.controller";
 import { errorHandler } from "~/infrastructure/internal/exceptions/ErrorHandler";
 import { ILoggingDriver } from "~/infrastructure/internal/logger/ILoggingDriver";
@@ -45,7 +47,7 @@ export default class Express {
       const { default: controller } = await import(controllerPath);
       const resolvedController: BaseController = container.resolve(controller);
       resolvedController.initializeRoutes(TypeParser.cast<IRouter>(Router));
-      this.app.use(AppSettings.ServerRoot, TypeParser.cast<Application>(resolvedController.router));
+      this.app.use(TypeParser.cast<Application>(resolvedController.router));
       this.loggingProvider.info(`${resolvedController?.controllerName} was initialized`);
     }
 
@@ -57,8 +59,16 @@ export default class Express {
   }
 
   private loadErrorHandler(): void {
-    this.app.use((err: Error, _req: Request, _res: Response, next: NextFunction) => {
+    this.app.use((err: any, _req: Request, res: any, next: NextFunction) => {
       this.loggingProvider.error(err.message);
+
+      if (err.status === HttpStatusCodeEnum.BAD_REQUEST && "body" in err) {
+        return res.status(HttpStatusCodeEnum.BAD_REQUEST).json({
+          status: ERROR,
+          message: "Invalid JSON payload",
+        });
+      }
+
       next(err);
     });
 

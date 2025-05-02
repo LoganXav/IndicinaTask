@@ -23,7 +23,8 @@
     "helmet": "^8.1.0",
     "reflect-metadata": "^0.2.2",
     "tsyringe": "^4.10.0",
-    "winston": "^3.17.0"
+    "winston": "^3.17.0",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",

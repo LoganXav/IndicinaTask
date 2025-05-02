@@ -1,9 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { HttpContentTypeEnums } from "~/helpers/enums/HttpContentTypeEnums";
 import { HttpHeaderEnums } from "~/helpers/enums/HttpHeaderEnums";
 import { LocaleTypeEnums } from "~/helpers/enums/LocaleTypeEnums";
 import { HttpMethodEnums } from "~/helpers/enums/HttpMethodEnums";
-import { HttpStatusCodeEnum } from "~/helpers/enums/HttpStatusCodeEnums";
+import { HttpContentTypeEnums } from "~/helpers/enums/HttpContentTypeEnums";
 
 export type HeaderType = {
   [key in HttpHeaderEnums]?: HttpContentTypeEnums | string;
