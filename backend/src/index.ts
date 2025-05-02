@@ -8,6 +8,5 @@ const app = new Application();
 app.start(new Date());
 
 process.on("uncaughtException", (error: Error) => {
-  console.log(`Uncaught Exception: ${error.message}`);
   errorHandler.handleError(error);
 });

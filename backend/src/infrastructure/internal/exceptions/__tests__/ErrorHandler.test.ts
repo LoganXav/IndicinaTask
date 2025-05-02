@@ -1,12 +1,22 @@
 import request from "supertest";
-import { Application } from "~/infrastructure/internal/application";
-import ApplicationError from "~/infrastructure/internal/exceptions/ApplicationError";
-import { errorHandler } from "~/infrastructure/internal/exceptions/ErrorHandler";
-import { HttpStatusCodeEnum } from "~/helpers/enums/HttpStatusCodeEnums";
-import { CRITICAL_ERROR_EXITING, ERROR } from "~/helpers/messsges/SystemMessages";
 import { NextFunction, Request, Response } from "express";
+import { Application } from "~/infrastructure/internal/application";
+import { HttpStatusCodeEnum } from "~/helpers/enums/HttpStatusCodeEnums";
+import { errorHandler } from "~/infrastructure/internal/exceptions/ErrorHandler";
+import { CRITICAL_ERROR_EXITING, ERROR } from "~/helpers/messsges/SystemMessages";
+import ApplicationError from "~/infrastructure/internal/exceptions/ApplicationError";
 
 describe("ErrorHandler", () => {
+  // Mock process.exit to prevent tests from actually exiting
+  const mockExit = jest.spyOn(process, "exit").mockImplementation((code?: number | string | null) => {
+    return undefined as never;
+  });
+
+  // Reset mocks after each test
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("Should handle trusted errors", async () => {
     const app = new Application();
     const server = app.express.app;
@@ -16,7 +26,7 @@ describe("ErrorHandler", () => {
       isOperational: true,
     });
 
-    server.use((req: Request, res: Response, next: NextFunction) => {
+    server.use((_req: Request, res: Response, _next: NextFunction) => {
       errorHandler.handleError(error, res);
     });
 
@@ -28,14 +38,19 @@ describe("ErrorHandler", () => {
       status: ERROR,
       message: error.message,
     });
+    // Should not call process.exit for trusted errors
+    expect(mockExit).not.toHaveBeenCalled();
   });
 
-  it("Should handle critical errors", async () => {
+  it("Should handle critical errors with proper shutdown sequence", async () => {
     const app = new Application();
     const server = app.express.app;
     const error = new Error("Test critical error");
 
-    server.use((req: Request, res: Response, next: NextFunction) => {
+    // Mock setTimeout to execute immediately
+    jest.useFakeTimers();
+
+    server.use((_req: Request, res: Response, _next: NextFunction) => {
       errorHandler.handleError(error, res);
     });
 
@@ -47,10 +62,48 @@ describe("ErrorHandler", () => {
       status: ERROR,
       message: CRITICAL_ERROR_EXITING,
     });
+
+    // Fast-forward timers
+    jest.runAllTimers();
+
+    // Verify shutdown sequence
+    expect(process.exitCode).toBe(1);
+    expect(mockExit).toHaveBeenCalledWith(1);
+
+    // Restore real timers
+    jest.useRealTimers();
   });
 
   it("Should handle critical errors without response object", () => {
     const error = new Error("Test critical error");
-    expect(() => errorHandler.handleError(error)).not.toThrow();
+
+    // Mock setTimeout to execute immediately
+    jest.useFakeTimers();
+
+    errorHandler.handleError(error);
+
+    // Fast-forward timers
+    jest.runAllTimers();
+
+    // Verify shutdown sequence
+    expect(process.exitCode).toBe(1);
+    expect(mockExit).toHaveBeenCalledWith(1);
+
+    // Restore real timers
+    jest.useRealTimers();
+  });
+
+  it("Should handle errors during shutdown gracefully", () => {
+    const error = new Error("Test critical error");
+
+    // Force an error during shutdown
+    jest.spyOn(errorHandler["loggingProvider"], "error").mockImplementationOnce(() => {
+      throw new Error("Logging failed");
+    });
+
+    errorHandler.handleError(error);
+
+    // Should still exit
+    expect(mockExit).toHaveBeenCalledWith(1);
   });
 });

@@ -1,7 +1,7 @@
 import { Server, createServer } from "http";
 import Express from "~/infrastructure/internal/express";
 import AppSettings from "~/helpers/settings/AppSettings";
-
+import { InternalServerError } from "~/infrastructure/internal/exceptions/InternalServerError";
 export class Application {
   express: Express;
   server: Server;
@@ -18,7 +18,7 @@ export class Application {
         this.server.listen(AppSettings.ServerPort);
       })
       .catch((error: Error) => {
-        this.express.loggingProvider.error(`Starting server error: ${error}`);
+        throw new InternalServerError(`Starting server error: ${error.message}`, false);
       });
 
     this.server.on("listening", () => {

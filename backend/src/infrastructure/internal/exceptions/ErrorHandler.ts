@@ -1,8 +1,8 @@
 import { Response } from "express";
-import { CRITICAL_ERROR_EXITING, ERROR } from "~/helpers/messsges/SystemMessages";
 import { HttpStatusCodeEnum } from "~/helpers/enums/HttpStatusCodeEnums";
-import { LoggingProviderFactory } from "../logger/LoggingProviderFactory";
-import ApplicationError from "./ApplicationError";
+import { CRITICAL_ERROR_EXITING, ERROR } from "~/helpers/messsges/SystemMessages";
+import ApplicationError from "~/infrastructure/internal/exceptions/ApplicationError";
+import { LoggingProviderFactory } from "~/infrastructure/internal/logger/LoggingProviderFactory";
 
 /**
  * @description Handles errors in the application.
@@ -11,6 +11,7 @@ import ApplicationError from "./ApplicationError";
 
 class ErrorHandler {
   private loggingProvider = LoggingProviderFactory.build();
+
   public handleError(error: Error | ApplicationError, response?: Response): void {
     if (this.isTrustedError(error) && response) {
       this.handleTrustedError(error as ApplicationError, response);
@@ -19,10 +20,11 @@ class ErrorHandler {
     }
   }
 
-  private isTrustedError(error: Error) {
+  private isTrustedError(error: Error): boolean {
     if (error instanceof ApplicationError) {
       return !!error.isOperational;
     }
+    return false;
   }
 
   private handleTrustedError(error: ApplicationError, response: Response): void {
@@ -32,15 +34,28 @@ class ErrorHandler {
       message: error.message,
     });
   }
-  private handleCriticalError(error: Error | ApplicationError, response?: Response): void {
+  private handleCriticalError(_error: Error | ApplicationError, response?: Response): void {
     try {
-      response?.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
-        statusCode: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
-        status: ERROR,
-        message: CRITICAL_ERROR_EXITING,
-      });
-    } catch (error: any) {
-      this.loggingProvider.error(`Critical: Error in Error handling: ${error.message}`);
+      if (response && !response.headersSent) {
+        response.status(HttpStatusCodeEnum.INTERNAL_SERVER_ERROR).json({
+          statusCode: HttpStatusCodeEnum.INTERNAL_SERVER_ERROR,
+          status: ERROR,
+          message: CRITICAL_ERROR_EXITING,
+        });
+      }
+
+      this.loggingProvider.error("Critical error encountered. Beginning graceful shutdown...");
+
+      process.exitCode = 1;
+
+      // Short delay to allow logs to flush
+      setTimeout(() => {
+        this.loggingProvider.info("Exiting process now.");
+        process.exit(1);
+      }, 1000);
+    } catch (handlingError: any) {
+      this.loggingProvider.error("Failed to complete graceful shutdown. Forcing exit.");
+      process.exit(1);
     }
   }
 }

@@ -1,6 +1,6 @@
 export default {
   preset: "ts-jest",
-  // testEnvironment: "node",
+  testEnvironment: "node",
   collectCoverageFrom: ["src/**/*.ts", "!src/**/*.d.ts", "!src/**/*.test.ts", "!src/**/__tests__/**"],
   setupFiles: ["dotenv/config"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
