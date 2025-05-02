@@ -1,9 +1,9 @@
 import { IRouter } from "~/types/Http";
 import { autoInjectable } from "tsyringe";
 import UrlService from "~/api/modules/url/services/Url.service";
-import { urlEncodeSchema } from "../validators/UrlEncode.schema";
 import { HttpHeaderEnums } from "~/helpers/enums/HttpHeaderEnums";
 import { HttpMethodEnums } from "~/helpers/enums/HttpMethodEnums";
+import { urlEncodeRequestSchema } from "../validators/Url.schema";
 import BaseController from "~/api/modules/base/controllers/Base.controller";
 import { HttpContentTypeEnums } from "~/helpers/enums/HttpContentTypeEnums";
 import { ValidateRequestBody } from "~/api/shared/middleware/ValidateRequestBody";
@@ -20,7 +20,7 @@ export default class UrlController extends BaseController {
   }
 
   encode: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
-    return this.handleResult(res, next, this.urlService.encode(), {
+    return this.handleResult(res, next, this.urlService.execute(req.body), {
       [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.TEXT_PLAIN,
     });
   };
@@ -55,8 +55,8 @@ export default class UrlController extends BaseController {
     this.addRoute({
       method: HttpMethodEnums.POST,
       path: "/api/encode",
-      handlers: [ValidateRequestBody(urlEncodeSchema), this.encode],
-      description: "Encode a Long URL to a Short URL",
+      handlers: [ValidateRequestBody(urlEncodeRequestSchema), this.encode],
+      description: "Encode a long URL to a short URL",
     });
 
     this.addRoute({
