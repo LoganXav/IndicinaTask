@@ -2,12 +2,15 @@ import { QueryTagEnums } from '~/constants/query-tags';
 import { getRequest, postRequest } from '~/config/base-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  UrlDecodeResponseType,
+  // UrlDecodeResponseType,
   UrlEncodeResponseType,
   UrlListResponseType,
-  UrlType,
+  // UrlType,
 } from '~/types';
-import { UrlShortenerRequestType } from '~/features/home/home-url-shortener-schema';
+import {
+  // UrlShortenerRequestType,
+  UrlShortenerEncodeRequestType,
+} from '~/features/home/home-url-shortener-schema';
 
 export const useGetUrlListQuery = () => {
   const { data, isLoading, error, refetch } = useQuery({
@@ -31,10 +34,14 @@ export const useUrlEncodeMutation = () => {
     isPending: urlEncodePending,
     error: urlEncodeError,
   } = useMutation({
-    mutationFn: async ({ payload }: { payload: UrlShortenerRequestType }) => {
+    mutationFn: async ({
+      payload,
+    }: {
+      payload: UrlShortenerEncodeRequestType;
+    }) => {
       const data = await postRequest<
         UrlEncodeResponseType,
-        UrlShortenerRequestType
+        UrlShortenerEncodeRequestType
       >({
         endpoint: `api/encode`,
         payload,
@@ -51,66 +58,66 @@ export const useUrlEncodeMutation = () => {
   return { urlEncode, urlEncodePending, urlEncodeError };
 };
 
-export const useUrlDecodeMutation = () => {
-  const queryClient = useQueryClient();
+// export const useUrlDecodeMutation = () => {
+//   const queryClient = useQueryClient();
 
-  const {
-    mutate: urlDecode,
-    isPending: urlDecodePending,
-    error: urlDecodeError,
-  } = useMutation({
-    mutationFn: async ({ payload }: { payload: UrlShortenerRequestType }) => {
-      const data = await postRequest<
-        UrlDecodeResponseType,
-        UrlShortenerRequestType
-      >({
-        endpoint: `api/decode`,
-        payload,
-        config: {},
-      });
+//   const {
+//     mutate: urlDecode,
+//     isPending: urlDecodePending,
+//     error: urlDecodeError,
+//   } = useMutation({
+//     mutationFn: async ({ payload }: { payload: UrlShortenerRequestType }) => {
+//       const data = await postRequest<
+//         UrlDecodeResponseType,
+//         UrlShortenerRequestType
+//       >({
+//         endpoint: `api/decode`,
+//         payload,
+//         config: {},
+//       });
 
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.URL] });
-    },
-  });
+//       return data;
+//     },
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.URL] });
+//     },
+//   });
 
-  return { urlDecode, urlDecodePending, urlDecodeError };
-};
+//   return { urlDecode, urlDecodePending, urlDecodeError };
+// };
 
-export const useGetUrlStatisticsQuery = ({
-  path,
-}: {
-  path: { urlPath: string };
-}) => {
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.URL],
-    queryFn: async () => {
-      return await getRequest<UrlType[]>({
-        endpoint: `api/statistics/${path.urlPath}`,
-        config: {},
-      });
-    },
-  });
+// export const useGetUrlStatisticsQuery = ({
+//   path,
+// }: {
+//   path: { urlPath: string };
+// }) => {
+//   const { data, isLoading, error, refetch } = useQuery({
+//     queryKey: [QueryTagEnums.URL],
+//     queryFn: async () => {
+//       return await getRequest<UrlType[]>({
+//         endpoint: `api/statistics/${path.urlPath}`,
+//         config: {},
+//       });
+//     },
+//   });
 
-  return { data, isLoading, error, refetch };
-};
+//   return { data, isLoading, error, refetch };
+// };
 
-export const useGetUrlRedirectQuery = ({
-  path,
-}: {
-  path: { urlPath: string };
-}) => {
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.URL],
-    queryFn: async () => {
-      return await getRequest<UrlType[]>({
-        endpoint: `/${path.urlPath}`,
-        config: {},
-      });
-    },
-  });
+// export const useGetUrlRedirectQuery = ({
+//   path,
+// }: {
+//   path: { urlPath: string };
+// }) => {
+//   const { data, isLoading, error, refetch } = useQuery({
+//     queryKey: [QueryTagEnums.URL],
+//     queryFn: async () => {
+//       return await getRequest<UrlType[]>({
+//         endpoint: `/${path.urlPath}`,
+//         config: {},
+//       });
+//     },
+//   });
 
-  return { data, isLoading, error, refetch };
-};
+//   return { data, isLoading, error, refetch };
+// };

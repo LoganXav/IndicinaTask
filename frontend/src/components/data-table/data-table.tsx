@@ -20,7 +20,7 @@ import {
 import { DataTablePagination } from '~/components/data-table/data-table-pagination';
 
 interface TableProps<TData, TValue> {
-  data: TData[];
+  data: TData[] | undefined;
   columns: ColumnDef<TData, TValue>[];
   props?: React.ComponentProps<typeof TableRoot>;
 }

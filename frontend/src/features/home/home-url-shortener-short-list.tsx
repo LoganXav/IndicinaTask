@@ -1,15 +1,18 @@
 import { ArrowRightIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { RouteEnums } from '~/constants/routes';
 import { Card } from '~/components/globals/card';
 import { Button } from '~/components/globals/button';
+import { Tooltip } from '~/components/globals/tooltip';
 import { useGetUrlListQuery } from '~/apis/core-url-api';
 import { Typography } from '~/components/globals/typography';
 import { LoadingContent } from '~/components/loading-content';
-import { Tooltip } from '~/components/globals/tooltip';
 import { TooltipTrigger } from '~/components/globals/tooltip';
 import { TooltipContent } from '~/components/globals/tooltip';
 import { TooltipProvider } from '~/components/globals/tooltip';
 
 export function HomeUrlShortenerShortList() {
+  const navigate = useNavigate();
   const {
     data: urlList,
     isLoading: isLoadingUrlList,
@@ -56,7 +59,11 @@ export function HomeUrlShortenerShortList() {
         </Card>
       </LoadingContent>
 
-      <Button className="underline self-end" variant="link">
+      <Button
+        className="underline self-end"
+        variant="link"
+        onClick={() => navigate(RouteEnums.LIST)}
+      >
         View full list <ArrowRightIcon className="h-3 w-3" />
       </Button>
     </div>
