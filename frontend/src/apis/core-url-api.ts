@@ -1,13 +1,19 @@
-import { UrlType } from '~/types';
 import { QueryTagEnums } from '~/constants/query-tags';
 import { getRequest, postRequest } from '~/config/base-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  UrlDecodeResponseType,
+  UrlEncodeResponseType,
+  UrlListResponseType,
+  UrlType,
+} from '~/types';
+import { UrlEncodeRequestType } from '~/features/home/home-url-shortener-schema';
 
 export const useGetUrlListQuery = () => {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.URL],
     queryFn: async () => {
-      return await getRequest<UrlType[]>({
+      return await getRequest<UrlListResponseType>({
         endpoint: `api/list`,
         config: {},
       });
@@ -26,7 +32,10 @@ export const useUrlEncodeMutation = () => {
     error: urlEncodeError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: UrlEncodeRequestType }) => {
-      const data = await postRequest<UrlType, UrlEncodeRequestType>({
+      const data = await postRequest<
+        UrlEncodeResponseType,
+        UrlEncodeRequestType
+      >({
         endpoint: `api/encode`,
         payload,
         config: {},
@@ -51,7 +60,10 @@ export const useUrlDecodeMutation = () => {
     error: urlDecodeError,
   } = useMutation({
     mutationFn: async ({ payload }: { payload: UrlDecodeRequestType }) => {
-      const data = await postRequest<UrlType, UrlDecodeRequestType>({
+      const data = await postRequest<
+        UrlDecodeResponseType,
+        UrlDecodeRequestType
+      >({
         endpoint: `api/decode`,
         payload,
         config: {},

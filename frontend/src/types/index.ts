@@ -5,3 +5,38 @@ export type UrlType = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type UrlEncodeResponseType = {
+  data: UrlType;
+  message: string;
+  status: string;
+  statusCode: number;
+};
+
+export type UrlDecodeResponseType = {
+  data: UrlType;
+  message: string;
+  status: string;
+  statusCode: number;
+};
+
+export type UrlStatisticsResponseType = {
+  data: UrlType;
+  message: string;
+  status: string;
+  statusCode: number;
+};
+
+export type UrlRedirectResponseType = {
+  data: UrlType;
+  message: string;
+  status: string;
+  statusCode: number;
+};
+
+export type UrlListResponseType = {
+  data: UrlType[];
+  message: string;
+  status: string;
+  statusCode: number;
+};
