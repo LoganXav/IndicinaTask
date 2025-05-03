@@ -1,101 +1,51 @@
+import { Card } from '~/components/globals/card';
+import { toast } from '~/components/globals/toast';
+import { Input } from '~/components/globals/input';
+import { Button } from '~/components/globals/button';
+import { ThemeToggler } from '~/components/theme-toggler';
+import { DataTable } from '~/components/data-table/data-table';
+import { LoadingContent } from '~/components/loading-content';
+
 export default function App() {
   return (
-    <div className="min-h-screen bg-background p-8">
-      <header className="mb-12">
-        <h1 className="font-display font-black text-6xl bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-          Shortlink
-        </h1>
-        <p className="font-display font-medium text-xl text-muted-foreground">
-          A simple URL shortening service
-        </p>
-      </header>
+    <div className="flex flex-col gap-4 max-w-4xl p-8">
+      <ThemeToggler />
+      <Button onClick={() => toast.info('Hello, world!')}>Click me</Button>
 
-      <main className="space-y-8">
-        <section className="space-y-4">
-          <h2 className="font-primary font-bold text-3xl">Font Weights Demo</h2>
+      <Input placeholder="Hello, world!" />
 
-          <div className="grid gap-4">
-            <p className="font-primary font-light">
-              DM Sans Light (300) - The quick brown fox jumps over the lazy dog
-            </p>
-            <p className="font-primary font-normal">
-              DM Sans Regular (400) - The quick brown fox jumps over the lazy
-              dog
-            </p>
-            <p className="font-primary font-medium">
-              DM Sans Medium (500) - The quick brown fox jumps over the lazy dog
-            </p>
-            <p className="font-primary font-semibold">
-              DM Sans Semi Bold (600) - The quick brown fox jumps over the lazy
-              dog
-            </p>
-            <p className="font-primary font-bold">
-              DM Sans Bold (700) - The quick brown fox jumps over the lazy dog
-            </p>
-            <p className="font-primary font-extrabold">
-              DM Sans Extra Bold (800) - The quick brown fox jumps over the lazy
-              dog
-            </p>
-          </div>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="font-display font-bold text-3xl">
-            SF UI Display Weights
-          </h2>
-
-          <div className="grid gap-4">
-            <p className="font-display font-light">
-              SF UI Display Thin (300) - The quick brown fox jumps over the lazy
-              dog
-            </p>
-            <p className="font-display font-normal">
-              SF UI Display Light (400) - The quick brown fox jumps over the
-              lazy dog
-            </p>
-            <p className="font-display font-medium">
-              SF UI Display Medium (500) - The quick brown fox jumps over the
-              lazy dog
-            </p>
-            <p className="font-display font-semibold">
-              SF UI Display Semi Bold (600) - The quick brown fox jumps over the
-              lazy dog
-            </p>
-            <p className="font-display font-bold">
-              SF UI Display Bold (700) - The quick brown fox jumps over the lazy
-              dog
-            </p>
-            <p className="font-display font-extrabold">
-              SF UI Display Heavy (800) - The quick brown fox jumps over the
-              lazy dog
-            </p>
-            <p className="font-display font-black">
-              SF UI Display Black (900) - The quick brown fox jumps over the
-              lazy dog
-            </p>
-          </div>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="font-primary font-bold text-3xl">
-            Italic Styles (DM Sans)
-          </h2>
-
-          <div className="grid gap-4">
-            <p className="font-primary font-normal italic">
-              DM Sans Regular Italic - The quick brown fox jumps over the lazy
-              dog
-            </p>
-            <p className="font-primary font-medium italic">
-              DM Sans Medium Italic - The quick brown fox jumps over the lazy
-              dog
-            </p>
-            <p className="font-primary font-bold italic">
-              DM Sans Bold Italic - The quick brown fox jumps over the lazy dog
-            </p>
-          </div>
-        </section>
-      </main>
+      <Card>
+        <LoadingContent data={[]}>
+          <DataTable
+            data={[
+              {
+                name: 'John Doe',
+                email: 'john.doe@example.com',
+                phone: '1234567890',
+                address: '123 Main St, Anytown, USA',
+              },
+            ]}
+            columns={[
+              {
+                header: 'Name',
+                accessorKey: 'name',
+              },
+              {
+                header: 'Email',
+                accessorKey: 'email',
+              },
+              {
+                header: 'Phone',
+                accessorKey: 'phone',
+              },
+              {
+                header: 'Address',
+                accessorKey: 'address',
+              },
+            ]}
+          />
+        </LoadingContent>
+      </Card>
     </div>
   );
 }

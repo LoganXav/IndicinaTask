@@ -8,39 +8,38 @@ const config: Config = {
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
+        },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
-          background: 'hsl(var(--primary-background))',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
         },
-        tertiary: 'hsl(var(--tertiary))',
-        success: {
-          DEFAULT: 'hsla(var(--success))',
-          foreground: 'hsla(var(--success-foreground))',
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
         destructive: {
-          DEFAULT: 'hsla(var(--destructive))',
-          foreground: 'hsla(var(--destructive-foreground))',
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
-        info: {
-          DEFAULT: 'hsla(var(--info))',
-          foreground: 'hsla(var(--info-foreground))',
-        },
+        border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
-        pager: {
-          DEFAULT: 'hsla(var(--pager))',
-          foreground: 'hsla(var(--pager-foreground))',
-          background: 'hsla(var(--pager-background))',
-        },
-        muted: 'hsl(var(--muted))',
         ring: 'hsl(var(--ring))',
-        input_invert: 'hsl(var(--input-invert))',
       },
-
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
