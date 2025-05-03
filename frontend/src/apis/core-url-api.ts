@@ -2,12 +2,14 @@ import { QueryTagEnums } from '~/constants/query-tags';
 import { getRequest, postRequest } from '~/config/base-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
+  UrlDecodeResponseType,
   // UrlDecodeResponseType,
   UrlEncodeResponseType,
   UrlListResponseType,
   // UrlType,
 } from '~/types';
 import {
+  UrlShortenerDecodeRequestType,
   // UrlShortenerRequestType,
   UrlShortenerEncodeRequestType,
 } from '~/features/home/home-url-shortener-schema';
@@ -58,33 +60,37 @@ export const useUrlEncodeMutation = () => {
   return { urlEncode, urlEncodePending, urlEncodeError };
 };
 
-// export const useUrlDecodeMutation = () => {
-//   const queryClient = useQueryClient();
+export const useUrlDecodeMutation = () => {
+  const queryClient = useQueryClient();
 
-//   const {
-//     mutate: urlDecode,
-//     isPending: urlDecodePending,
-//     error: urlDecodeError,
-//   } = useMutation({
-//     mutationFn: async ({ payload }: { payload: UrlShortenerRequestType }) => {
-//       const data = await postRequest<
-//         UrlDecodeResponseType,
-//         UrlShortenerRequestType
-//       >({
-//         endpoint: `api/decode`,
-//         payload,
-//         config: {},
-//       });
+  const {
+    mutate: urlDecode,
+    isPending: urlDecodePending,
+    error: urlDecodeError,
+  } = useMutation({
+    mutationFn: async ({
+      payload,
+    }: {
+      payload: UrlShortenerDecodeRequestType;
+    }) => {
+      const data = await postRequest<
+        UrlDecodeResponseType,
+        UrlShortenerDecodeRequestType
+      >({
+        endpoint: `api/decode`,
+        payload,
+        config: {},
+      });
 
-//       return data;
-//     },
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.URL] });
-//     },
-//   });
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.URL] });
+    },
+  });
 
-//   return { urlDecode, urlDecodePending, urlDecodeError };
-// };
+  return { urlDecode, urlDecodePending, urlDecodeError };
+};
 
 // export const useGetUrlStatisticsQuery = ({
 //   path,
