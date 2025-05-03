@@ -15,6 +15,7 @@ export interface IResponse {
   send(body: unknown): IResponse;
   json(body: unknown): IResponse;
   setHeader(name: string, value: number | string): this;
+  redirect(url: string): IResponse;
 }
 
 export interface IRequest {

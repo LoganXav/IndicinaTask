@@ -5,7 +5,7 @@ export class Result implements IResult {
   public success: boolean;
   public message: string;
   public status: string;
-  public token: string | undefined;
+  public url?: string;
   public error: string;
   public result: unknown;
   public data: { message: string; data: unknown };
@@ -15,12 +15,12 @@ export class Result implements IResult {
     this.statusCode = statusCode;
     this.success = success;
   }
-  setData(status: string, statusCode: number | string, message: string, result?: unknown, token?: string): void {
+  setData(status: string, statusCode: number | string, message: string, result: unknown, url?: string): void {
     this.status = status;
     this.statusCode = statusCode;
     this.message = message;
     this.result = result;
-    this.token = token;
+    this.url = url;
   }
   setMessage(message: string, statusCode: number | string): void {
     this.message = message;
@@ -60,5 +60,17 @@ export class Result implements IResult {
 
   hasMetadata(): boolean {
     return Object.keys(this.metadata).length > 0;
+  }
+
+  clear(): void {
+    this.statusCode = 0;
+    this.success = false;
+    this.message = "";
+    this.status = "";
+    this.url = undefined;
+    this.result = null;
+    this.data = { message: "", data: null };
+    this.metadata = {};
+    this.error = "";
   }
 }

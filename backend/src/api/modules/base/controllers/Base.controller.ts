@@ -1,4 +1,5 @@
 import { IResult } from "~/api/shared/result/IResult";
+import { HttpStatusCodeEnum } from "~/helpers/enums/HttpStatusCodeEnums";
 import { ILoggingDriver } from "~/infrastructure/internal/logger/ILoggingDriver";
 import { HeaderType, INextFunction, IResponse, IRouter, RouteType } from "~/types/Http";
 import { InternalServerError } from "~/infrastructure/internal/exceptions/InternalServerError";
@@ -45,22 +46,43 @@ export default abstract class BaseController {
     }
   }
 
+  public async handleResultRedirect(res: IResponse, next: INextFunction, servicePromise: Promise<IResult>, headersToSet?: HeaderType): Promise<void> {
+    try {
+      return await this.getResultRedirect(res, await servicePromise, headersToSet);
+    } catch (error) {
+      return next(error);
+    }
+  }
+
   // <===========+ Helper Methods +============> //
 
   private async getResultData(res: IResponse, result: IResult, headersToSet?: HeaderType): Promise<void> {
     this.setHeaders(res, headersToSet);
 
     res.status(Number(result.statusCode)).json(result.message ? result.toResultDto() : result.toResultDto().data);
+    result.clear();
+  }
+
+  private async getResult(res: IResponse, result: IResult, headersToSet?: HeaderType): Promise<void> {
+    this.setHeaders(res, headersToSet);
+    res.status(Number(result.statusCode)).json(result);
+    result.clear();
+  }
+
+  private async getResultRedirect(res: IResponse, result: IResult, headersToSet?: HeaderType): Promise<void> {
+    this.setHeaders(res, headersToSet);
+
+    if (result.statusCode === HttpStatusCodeEnum.REDIRECT && result.url) {
+      res.redirect(result.url);
+    } else {
+      res.status(Number(result.statusCode)).json(result.message ? result.toResultDto() : result.toResultDto().data);
+    }
+    result.clear();
   }
 
   private setHeaders(res: IResponse, headersToSet?: HeaderType): void {
     if (headersToSet) {
       Object.entries(headersToSet).forEach(([key, value]) => res.setHeader(key, value));
     }
-  }
-
-  private async getResult(res: IResponse, result: IResult, headersToSet?: HeaderType): Promise<void> {
-    this.setHeaders(res, headersToSet);
-    res.status(Number(result.statusCode)).json(result);
   }
 }

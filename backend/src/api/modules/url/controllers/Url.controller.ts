@@ -8,7 +8,7 @@ import { HttpContentTypeEnums } from "~/helpers/enums/HttpContentTypeEnums";
 import { ValidateRequestBody } from "~/api/shared/middleware/ValidateRequestBody";
 import { ValidateRequestPath } from "~/api/shared/middleware/ValidateRequestPath";
 import { EntryPointHandler, IRequest, IResponse, INextFunction } from "~/types/Http";
-import { urlDecodeRequestSchema, urlEncodeRequestSchema, urlStatisticRequestSchema } from "~/api/modules/url/validators/Url.schema";
+import { urlDecodeRequestSchema, urlEncodeRequestSchema, urlRedirectRequestSchema, urlStatisticRequestSchema } from "~/api/modules/url/validators/Url.schema";
 
 @autoInjectable()
 export default class UrlController extends BaseController {
@@ -21,31 +21,31 @@ export default class UrlController extends BaseController {
   }
 
   encode: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
-    return this.handleResult(res, next, this.urlService.execute(req.body), {
+    return this.handleResultData(res, next, this.urlService.execute(req.body), {
       [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
 
   decode: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
-    return this.handleResult(res, next, this.urlService.decode(req.body), {
+    return this.handleResultData(res, next, this.urlService.decode(req.body), {
       [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
 
   statistic: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
-    return this.handleResult(res, next, this.urlService.statistic(req.params), {
+    return this.handleResultData(res, next, this.urlService.statistic(req.params), {
       [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
 
   list: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
-    return this.handleResult(res, next, this.urlService.list(), {
+    return this.handleResultData(res, next, this.urlService.list(), {
       [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
 
   redirect: EntryPointHandler = async (req: IRequest, res: IResponse, next: INextFunction): Promise<void> => {
-    return this.handleResult(res, next, this.urlService.redirect(), {
+    return this.handleResultRedirect(res, next, this.urlService.redirect(req.params), {
       [HttpHeaderEnums.CONTENT_TYPE]: HttpContentTypeEnums.APPLICATION_JSON,
     });
   };
@@ -83,8 +83,8 @@ export default class UrlController extends BaseController {
 
     this.addRoute({
       method: HttpMethodEnums.GET,
-      path: "/:url",
-      handlers: [this.redirect],
+      path: "/:path",
+      handlers: [ValidateRequestPath(urlRedirectRequestSchema), this.redirect],
       description: "Redirect to the Long URL",
     });
   }

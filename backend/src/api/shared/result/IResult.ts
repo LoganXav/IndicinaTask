@@ -3,7 +3,7 @@ export interface IResult {
   success: boolean;
   message: string;
   error: string;
-  token: string | undefined;
+  url?: string;
   data: { message: string; data: unknown };
   setStatusCode(statusCode: number | string, success: boolean): void;
   setMessage(message: string, statusCode: number | string): void;
@@ -15,6 +15,7 @@ export interface IResult {
   addMetadata(key: string, value: string | number): void;
   getMetadata(): Metadata;
   hasMetadata(): boolean;
+  clear(): void;
 }
 
 export interface ResultDto {
