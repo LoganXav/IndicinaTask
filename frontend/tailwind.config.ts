@@ -4,6 +4,13 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 const config: Config = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
+    container: {
+      center: true,
+      padding: '1rem',
+      screens: {
+        '2xl': '1200px',
+      },
+    },
     extend: {
       colors: {
         background: 'hsl(var(--background))',

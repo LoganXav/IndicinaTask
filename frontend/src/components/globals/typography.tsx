@@ -29,11 +29,16 @@ const typographyVariants = cva('', {
       semibold: 'font-semibold',
       bold: 'font-bold',
     },
+    font: {
+      primary: 'font-primary',
+      secondary: 'font-display',
+    },
   },
   defaultVariants: {
     size: 'p',
     color: 'default',
     weight: 'normal',
+    font: 'primary',
   },
 });
 
@@ -54,13 +59,15 @@ export interface TypographyProps
 }
 
 const Typography = forwardRef<HTMLElement, TypographyProps>(
-  ({ className, size, color, weight, as = 'div', ...props }, ref) => {
+  ({ className, size, color, weight, font, as = 'div', ...props }, ref) => {
     const Component = as || 'div';
 
     return (
       <Component
         ref={ref as any}
-        className={cn(typographyVariants({ size, color, weight, className }))}
+        className={cn(
+          typographyVariants({ size, color, weight, font, className })
+        )}
         {...props}
       />
     );

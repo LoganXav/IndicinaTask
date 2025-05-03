@@ -1,6 +1,14 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
-import { Typography } from '~/components/globals/typography';
 import { Button } from '~/components/globals/button';
+import { Typography } from '~/components/globals/typography';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from '~/components/globals/card';
+import { XCircle } from 'lucide-react';
+
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
@@ -32,18 +40,41 @@ export class ErrorBoundary extends Component<Props, State> {
       }
 
       return (
-        <div className="flex min-h-screen flex-col items-center justify-center gap-4 p-4">
-          <div className="flex flex-col items-center gap-2 text-center">
-            <Typography size={'h2'} color={'error'}>
-              Oops, something went wrong!
-            </Typography>
-            <Typography color={'muted'}>
-              {this.state.error?.message || 'An unexpected error occurred'}
-            </Typography>
-          </div>
-          <Button onClick={() => window.location.reload()}>
-            Refresh the page
-          </Button>
+        <div className="flex min-h-screen items-center justify-center p-4">
+          <Card className="w-full max-w-md">
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <XCircle className="h-8 w-8 text-destructive" />
+                <div className="space-y-1">
+                  <Typography as="h2" size="h3" color="error">
+                    Oops, something went wrong!
+                  </Typography>
+                  <Typography color="muted" size="small">
+                    {this.state.error?.message ||
+                      'An unexpected error occurred'}
+                  </Typography>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <Typography color="muted" size="small">
+                Don't worry, you can try:
+                <ul className="ml-6 mt-2 list-disc space-y-1">
+                  <li>Refreshing the page</li>
+                  <li>Checking your internet connection</li>
+                  <li>Coming back later</li>
+                </ul>
+              </Typography>
+            </CardContent>
+            <CardFooter>
+              <Button
+                onClick={() => window.location.reload()}
+                className="w-full"
+              >
+                Refresh the page
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
       );
     }
