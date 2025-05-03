@@ -2,7 +2,11 @@ import { z } from "zod";
 import AppSettings from "~/helpers/settings/AppSettings";
 
 export const urlEncodeRequestSchema = z.object({
-  url: z.string().min(1, { message: "url is required" }).url({ message: "Please enter a valid url" }),
+  url: z
+    .string()
+    .min(1, { message: "url is required" })
+    .url({ message: "Please enter a valid url" })
+    .refine((url) => !url.startsWith(AppSettings.UrlBasePath), { message: "Cannot shorten an already shortened URL" }),
 });
 
 export const urlDecodeRequestSchema = z.object({

@@ -23,9 +23,8 @@ export class Application {
 
     this.server.on("listening", () => {
       this.express.loggingProvider.info(`${AppSettings.ServiceName.toUpperCase()} Server running on ${AppSettings.ServerHost}:${AppSettings.ServerPort}${AppSettings.ServerRoot}`);
-      const processUptime = process.uptime().toFixed(3);
       const totalStartupTime = ((new Date().valueOf() - startAt.valueOf()) / 1000).toFixed(3);
-      this.express.loggingProvider.info(`Application startup took ${totalStartupTime} seconds (Node process has been running for ${processUptime} seconds)`);
+      this.express.loggingProvider.info(`Application startup took ${totalStartupTime} seconds`);
     });
   }
 }

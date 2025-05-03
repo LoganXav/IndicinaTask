@@ -48,8 +48,8 @@ export default class Express {
       const resolvedController: BaseController = container.resolve(controller);
       resolvedController.initializeRoutes(TypeParser.cast<IRouter>(Router));
       this.app.use(TypeParser.cast<Application>(resolvedController.router));
-      this.loggingProvider.info(`${resolvedController?.controllerName} was initialized`);
     }
+    this.loggingProvider.info(`${AppSettings.ServiceName.toUpperCase()} controllers initialized`);
 
     return Promise.resolve();
   }

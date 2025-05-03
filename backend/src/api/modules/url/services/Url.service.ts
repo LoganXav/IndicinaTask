@@ -41,7 +41,7 @@ export default class UrlService extends BaseService<UrlEncodeRequestType> {
       await this.urlProvider.save(shortPath, urlEntry);
     }
 
-    this.result.setData(SUCCESS, HttpStatusCodeEnum.SUCCESS, URL_ENCODED_SUCCESSFULLY, urlEntry);
+    this.result.setData(SUCCESS, HttpStatusCodeEnum.SUCCESS, URL_ENCODED_SUCCESSFULLY, { ...urlEntry, action: "encode" });
     return this.result;
   }
 
@@ -54,7 +54,7 @@ export default class UrlService extends BaseService<UrlEncodeRequestType> {
         throw new NotFoundError(URL_NOT_FOUND);
       }
 
-      this.result.setData(SUCCESS, HttpStatusCodeEnum.SUCCESS, URL_DECODED_SUCCESSFULLY, urlEntry);
+      this.result.setData(SUCCESS, HttpStatusCodeEnum.SUCCESS, URL_DECODED_SUCCESSFULLY, { ...urlEntry, action: "decode" });
       return this.result;
     } catch (error: any) {
       this.loggingProvider.error(error);
@@ -72,7 +72,7 @@ export default class UrlService extends BaseService<UrlEncodeRequestType> {
         throw new NotFoundError(URL_PATH_NOT_FOUND);
       }
 
-      this.result.setData(SUCCESS, HttpStatusCodeEnum.SUCCESS, URL_STATISTIC_FETCHED_SUCCESSFULLY, urlEntry);
+      this.result.setData(SUCCESS, HttpStatusCodeEnum.SUCCESS, URL_STATISTIC_FETCHED_SUCCESSFULLY, { ...urlEntry, action: "statistic" });
       return this.result;
     } catch (error: any) {
       this.loggingProvider.error(error);
