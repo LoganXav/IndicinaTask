@@ -3,7 +3,7 @@ import { HomeUrlShortenerShortList } from '~/features/home/home-url-shortener-sh
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col gap-10">
       <div className="min-h-60"></div>
       <HomeUrlShortenerForm />
       <HomeUrlShortenerShortList />

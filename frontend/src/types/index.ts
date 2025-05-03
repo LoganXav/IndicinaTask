@@ -4,6 +4,7 @@ export type UrlType = {
   shortUrl: string;
   createdAt: string;
   updatedAt: string;
+  action: 'encode' | 'decode';
 };
 
 export type UrlEncodeResponseType = {
@@ -40,3 +41,17 @@ export type UrlListResponseType = {
   status: string;
   statusCode: number;
 };
+
+export type ActionType = 'encode' | 'decode';
+
+export interface EncodePayload {
+  action: 'encode';
+  url: string;
+}
+
+export interface DecodePayload {
+  action: 'decode';
+  shortUrl: string;
+}
+
+export type ActionPayload = EncodePayload | DecodePayload;

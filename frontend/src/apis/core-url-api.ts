@@ -7,7 +7,7 @@ import {
   UrlListResponseType,
   UrlType,
 } from '~/types';
-import { UrlEncodeRequestType } from '~/features/home/home-url-shortener-schema';
+import { UrlShortenerRequestType } from '~/features/home/home-url-shortener-schema';
 
 export const useGetUrlListQuery = () => {
   const { data, isLoading, error, refetch } = useQuery({
@@ -31,10 +31,10 @@ export const useUrlEncodeMutation = () => {
     isPending: urlEncodePending,
     error: urlEncodeError,
   } = useMutation({
-    mutationFn: async ({ payload }: { payload: UrlEncodeRequestType }) => {
+    mutationFn: async ({ payload }: { payload: UrlShortenerRequestType }) => {
       const data = await postRequest<
         UrlEncodeResponseType,
-        UrlEncodeRequestType
+        UrlShortenerRequestType
       >({
         endpoint: `api/encode`,
         payload,
@@ -59,10 +59,10 @@ export const useUrlDecodeMutation = () => {
     isPending: urlDecodePending,
     error: urlDecodeError,
   } = useMutation({
-    mutationFn: async ({ payload }: { payload: UrlDecodeRequestType }) => {
+    mutationFn: async ({ payload }: { payload: UrlShortenerRequestType }) => {
       const data = await postRequest<
         UrlDecodeResponseType,
-        UrlDecodeRequestType
+        UrlShortenerRequestType
       >({
         endpoint: `api/decode`,
         payload,
