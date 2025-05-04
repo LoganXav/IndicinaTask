@@ -4,6 +4,7 @@ import {
   TabsTrigger,
   TabsContent,
 } from '~/components/globals/tabs';
+import { ScrollArea, ScrollBar } from '~/components/globals/scroll-area';
 import { HomeUrlShortenerShortList } from '~/features/home/home-url-shortener-short-list';
 import { HomeUrlShortenerEncodeForm } from '~/features/home/home-url-shortener-encode-form';
 import { HomeUrlShortenerDecodeForm } from '~/features/home/home-url-shortener-decode-form';
@@ -42,13 +43,18 @@ export default function Home() {
         defaultValue={formTabs[0].value}
         className="w-full md:w-3/4 mx-auto"
       >
-        <TabsList className="flex justify-center mb-8">
-          {formTabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value}>
-              {tab.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+        <ScrollArea>
+          <div className="w-full relative h-14">
+            <TabsList className="flex absolute">
+              {formTabs.map((tab) => (
+                <TabsTrigger key={tab.value} value={tab.value}>
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
         {formTabs.map((tab) => (
           <TabsContent
             key={tab.value}

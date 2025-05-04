@@ -1,17 +1,14 @@
-import { TooltipContent, TooltipTrigger } from '~/components/globals/tooltip';
-
-import { Tooltip } from '~/components/globals/tooltip';
-
-import { CardContent } from '~/components/globals/card';
-
 import { Card } from '~/components/globals/card';
 import { Input } from '~/components/globals/input';
-import { TooltipProvider } from '~/components/globals/tooltip';
-import { Typography } from '~/components/globals/typography';
-import { Button } from '~/components/globals/button';
-import { ClipboardCopyIcon, CheckIcon } from '@radix-ui/react-icons';
 import { toast } from '~/components/globals/toast';
+import { Button } from '~/components/globals/button';
+import { Tooltip } from '~/components/globals/tooltip';
+import { CardContent } from '~/components/globals/card';
 import { useCopyToClipboard } from '~/hooks/use-clipboard';
+import { Typography } from '~/components/globals/typography';
+import { TooltipProvider } from '~/components/globals/tooltip';
+import { ClipboardCopyIcon, CheckIcon } from '@radix-ui/react-icons';
+import { TooltipContent, TooltipTrigger } from '~/components/globals/tooltip';
 
 export function HomeUrlShortenerClipboard({
   url,

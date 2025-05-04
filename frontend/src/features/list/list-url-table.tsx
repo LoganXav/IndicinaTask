@@ -2,8 +2,8 @@ import { format } from 'date-fns';
 import { UrlType } from '~/types';
 import { Card } from '~/components/globals/card';
 import { useGetUrlListQuery } from '~/apis/core-url-api';
-import { DataTable } from '~/components/data-table/data-table';
 import { LoadingContent } from '~/components/loading-content';
+import { DataTable } from '~/components/data-table/data-table';
 
 export function ListUrlTable() {
   const {

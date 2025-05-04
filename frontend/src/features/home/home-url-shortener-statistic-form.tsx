@@ -17,6 +17,7 @@ import { Typography } from '~/components/globals/typography';
 import { LoadingContent } from '~/components/loading-content';
 import { useGetUrlStatisticsQuery } from '~/apis/core-url-api';
 import { UrlStatisticSchema } from '~/features/home/home-url-shortener-schema';
+import { toast } from 'sonner';
 
 export function HomeUrlShortenerStatisticForm() {
   const [path, setPath] = useState<string>('');
@@ -47,6 +48,10 @@ export function HomeUrlShortenerStatisticForm() {
 
   const handle = async (data: z.infer<typeof UrlStatisticSchema>) => {
     setPath(data.path);
+
+    if (urlStatisticsError) {
+      toast.error(urlStatisticsError.message);
+    }
   };
 
   return (
@@ -89,41 +94,35 @@ export function HomeUrlShortenerStatisticForm() {
           <div className="space-y-2">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
               <Typography>Original URL:</Typography>
-              <Typography
-                color="muted"
-                className="underline underline-offset-4"
-              >
-                {urlStatistics?.data?.data?.url}
+              <Typography color="muted">
+                {urlStatistics?.data?.data?.url || '-'}
               </Typography>
             </div>
             <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
               <Typography>Short URL:</Typography>
-              <Typography
-                color="muted"
-                className="underline underline-offset-4"
-              >
-                {urlStatistics?.data?.data?.shortUrl}
+              <Typography color="muted">
+                {urlStatistics?.data?.data?.shortUrl || '-'}
               </Typography>
             </div>
 
             <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
               <Typography>Visit Count:</Typography>
               <Typography color="muted">
-                {urlStatistics?.data?.data?.visitCount}
+                {urlStatistics?.data?.data?.visitCount || '-'}
               </Typography>
             </div>
 
-            {urlStatistics?.data?.data?.createdAt && (
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
-                <Typography>Created At:</Typography>
-                <Typography color="muted">
-                  {format(
-                    new Date(urlStatistics?.data?.data?.createdAt),
-                    'PPpp'
-                  )}
-                </Typography>
-              </div>
-            )}
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
+              <Typography>Created At:</Typography>
+              <Typography color="muted">
+                {urlStatistics?.data?.data?.createdAt
+                  ? format(
+                      new Date(urlStatistics?.data?.data?.createdAt),
+                      'PPpp'
+                    )
+                  : '-'}
+              </Typography>
+            </div>
           </div>
         </Card>
       </LoadingContent>
