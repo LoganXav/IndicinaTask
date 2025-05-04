@@ -1,6 +1,6 @@
 import { Suspense, useMemo, lazy } from 'react';
 import { RouteEnums } from '~/constants/routes';
-import { configureRoutes } from '~/utils/route';
+import { configureRoutes } from '~/utils';
 import { Navigate, useRoutes } from 'react-router-dom';
 import { PageHeader } from '~/components/layout/page-header';
 import { PageFooter } from '~/components/layout/page-footer';

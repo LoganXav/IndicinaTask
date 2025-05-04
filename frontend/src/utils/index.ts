@@ -1,3 +1,6 @@
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
 import {
   createElement,
   LazyExoticComponent,
@@ -64,4 +67,23 @@ export function configureRoutes(
 
     return configured;
   }
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+export function toTitleCase(str: string) {
+  return str.replace(
+    /\w\S*/g,
+    (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase()
+  );
+}
+
+export function debounce(func: (...args: any[]) => void, delay: number) {
+  let timeout: number | undefined;
+  return function (...args: any[]) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
+  };
 }

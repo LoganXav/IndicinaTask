@@ -1,4 +1,4 @@
-import { cn } from '~/utils/style';
+import { cn } from '~/utils';
 import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggler } from '~/components/theme-toggler';
 

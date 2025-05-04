@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { cva } from 'class-variance-authority';
 
-import { cn } from '~/utils/style';
+import { cn } from '~/utils';
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 

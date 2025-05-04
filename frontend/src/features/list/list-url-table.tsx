@@ -1,11 +1,23 @@
+import {
+  ColumnFiltersState,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { UrlType } from '~/types';
+import { debounce } from '~/utils';
+import { useMemo, useState } from 'react';
 import { Card } from '~/components/globals/card';
+import { Input } from '~/components/globals/input';
 import { useGetUrlListQuery } from '~/apis/core-url-api';
 import { LoadingContent } from '~/components/loading-content';
 import { DataTable } from '~/components/data-table/data-table';
 
 export function ListUrlTable() {
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
   const {
     data: urlList,
     isLoading: isLoadingUrlList,
@@ -40,16 +52,48 @@ export function ListUrlTable() {
     },
   ];
 
+  const table = useReactTable({
+    data: urlList?.data?.data || [],
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    state: {
+      columnFilters,
+    },
+  });
+
+  const debouncedSetFilter = useMemo(
+    () =>
+      debounce((value: string) => {
+        if (value === '' || value.length >= 3) {
+          table.getColumn('url')?.setFilterValue(value);
+        }
+      }, 300),
+    [table]
+  );
+
   return (
-    <Card>
-      <LoadingContent
-        data={urlList}
-        loading={isLoadingUrlList}
-        error={errorUrlList}
-        retry={refetchUrlList}
-      >
-        <DataTable data={urlList?.data?.data} columns={columns} />
-      </LoadingContent>
-    </Card>
+    <>
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Search URLs (minimum 3 characters)..."
+          onChange={(event) => debouncedSetFilter(event.target.value)}
+          className="max-w-sm"
+        />
+      </div>
+
+      <Card>
+        <LoadingContent
+          data={urlList}
+          loading={isLoadingUrlList}
+          error={errorUrlList}
+          retry={refetchUrlList}
+        >
+          <DataTable table={table} />
+        </LoadingContent>
+      </Card>
+    </>
   );
 }

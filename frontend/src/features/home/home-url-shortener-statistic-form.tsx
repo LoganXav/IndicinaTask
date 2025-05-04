@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { toast } from 'sonner';
 import { useMemo, useState } from 'react';
 import {
   Form,
@@ -17,7 +18,6 @@ import { Typography } from '~/components/globals/typography';
 import { LoadingContent } from '~/components/loading-content';
 import { useGetUrlStatisticsQuery } from '~/apis/core-url-api';
 import { UrlStatisticSchema } from '~/features/home/home-url-shortener-schema';
-import { toast } from 'sonner';
 
 export function HomeUrlShortenerStatisticForm() {
   const [path, setPath] = useState<string>('');

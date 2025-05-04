@@ -1,4 +1,4 @@
-import { cn } from '~/utils/style';
+import { cn } from '~/utils';
 import { HTMLAttributes, forwardRef } from 'react';
 import { VariantProps, cva } from 'class-variance-authority';
 
