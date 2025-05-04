@@ -37,12 +37,12 @@ export function HomeUrlShortenerStatisticForm() {
   );
 
   useEffect(() => {
-    if (urlStatistics) {
+    if (urlStatistics?.data?.data) {
       toast.success(urlStatistics.data.message);
     } else if (urlStatisticsError) {
       toast.error(urlStatisticsError.message);
     }
-  }, [urlStatistics, urlStatisticsError]);
+  }, [urlStatistics, urlStatisticsError, path]);
 
   const defaultValues = {
     path: '',
@@ -94,7 +94,7 @@ export function HomeUrlShortenerStatisticForm() {
         retry={refetchUrlStatistics}
         shouldLoad={false}
       >
-        <Card className="mt-4 p-4">
+        <Card className="p-4">
           <div className="space-y-2">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
               <Typography>Original URL:</Typography>

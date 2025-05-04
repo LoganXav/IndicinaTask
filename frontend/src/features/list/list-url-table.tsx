@@ -45,7 +45,7 @@ export function ListUrlTable() {
       cell: ({ row }: { row: { original: UrlType } }) => {
         const isActive = row.original.isActive;
         return (
-          <Badge variant={isActive ? 'outline' : 'destructive'}>
+          <Badge variant={isActive ? 'default' : 'destructive'}>
             {isActive ? 'Active' : 'Expired'}
           </Badge>
         );

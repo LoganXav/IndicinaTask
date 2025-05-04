@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RouteEnums } from '~/constants/routes';
 import { Card } from '~/components/globals/card';
 import { Button } from '~/components/globals/button';
@@ -18,6 +18,7 @@ export function HomeUrlShortenerShortList() {
 
   return (
     <div className="space-y-2">
+      <Typography>Your recent URLs:</Typography>
       <LoadingContent
         loading={isLoadingUrlList}
         error={errorUrlList}
@@ -32,7 +33,14 @@ export function HomeUrlShortenerShortList() {
                 className="flex flex-col md:flex-row items-start md:items-center gap-4"
               >
                 <Typography>{url.url}</Typography>
-                <Typography color="muted">{url.shortUrl}</Typography>
+                <Link to={url.shortUrl} color="muted">
+                  <Typography
+                    color={'muted'}
+                    className="hover:text-foreground underline underline-offset-4"
+                  >
+                    {url.shortUrl}
+                  </Typography>
+                </Link>
               </div>
             ))}
           </Card>
@@ -44,7 +52,7 @@ export function HomeUrlShortenerShortList() {
       </LoadingContent>
 
       <Button
-        className="underline self-end"
+        className="underline self-end hover:text-foreground/90"
         variant="link"
         onClick={() => navigate(RouteEnums.LIST)}
       >

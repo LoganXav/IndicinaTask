@@ -12,7 +12,7 @@ export function PageHeader() {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-14 items-center">
         <div className="mr-4">
           <Link to="/">
@@ -35,7 +35,7 @@ export function PageHeader() {
                 className={cn(
                   'text-sm font-medium transition-colors hover:text-foreground/80',
                   location.pathname === item.href
-                    ? 'text-foreground'
+                    ? 'text-foreground underline underline-offset-4'
                     : 'text-foreground/60'
                 )}
               >

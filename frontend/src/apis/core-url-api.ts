@@ -1,16 +1,15 @@
 import { QueryTagEnums } from '~/constants/query-tags';
-import { getRequest, postRequest } from '~/config/base-query';
 import {
   UrlListResponseType,
   UrlEncodeResponseType,
   UrlDecodeResponseType,
   UrlStatisticResponseType,
-  UrlRedirectResponseType,
 } from '~/types';
 import {
   UrlShortenerDecodeRequestType,
   UrlShortenerEncodeRequestType,
 } from '~/features/home/home-url-shortener-schema';
+import { getRequest, postRequest } from '~/config/base-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useGetUrlListQuery = () => {
@@ -101,33 +100,13 @@ export const useGetUrlStatisticsQuery = ({
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: [QueryTagEnums.URL, 'statistics', path.urlPath],
     queryFn: async () => {
-      if (!path.urlPath) return null;
       return await getRequest<UrlStatisticResponseType>({
         endpoint: `api/statistic/${path.urlPath}`,
         config: {},
       });
     },
     enabled: !!path.urlPath,
-  });
-
-  return { data, isLoading, error, refetch };
-};
-
-export const useGetUrlRedirectQuery = ({
-  path,
-}: {
-  path: { urlPath: string };
-}) => {
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.URL, 'redirect', path.urlPath],
-    queryFn: async () => {
-      if (!path.urlPath) return null;
-      return await getRequest<UrlRedirectResponseType>({
-        endpoint: `${path.urlPath}`,
-        config: {},
-      });
-    },
-    enabled: !!path.urlPath,
+    staleTime: 0,
   });
 
   return { data, isLoading, error, refetch };

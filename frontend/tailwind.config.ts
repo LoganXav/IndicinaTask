@@ -14,7 +14,7 @@ const config: Config = {
     extend: {
       colors: {
         background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        foreground: 'hsl(var(--foreground) / <alpha-value>)',
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
@@ -24,8 +24,9 @@ const config: Config = {
           foreground: 'hsl(var(--popover-foreground))',
         },
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
+          DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
           foreground: 'hsl(var(--primary-foreground))',
+          background: 'hsl(var(--primary-background))',
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
@@ -42,6 +43,7 @@ const config: Config = {
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
+          background: 'hsl(var(--destructive-background))',
         },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
