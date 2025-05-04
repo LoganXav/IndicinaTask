@@ -30,13 +30,15 @@ describe("URL Encoder Integration Tests", () => {
       expect(response.body).toMatchObject({
         status: SUCCESS,
         statusCode: HttpStatusCodeEnum.SUCCESS,
-        message: URL_ENCODED_SUCCESSFULLY,
-        result: {
-          url,
-          shortUrl: expect.stringMatching(new RegExp(`^${AppSettings.UrlBasePath}.{${AppSettings.UrlShortenerLength}}$`)),
-          visitCount: expect.any(Number),
-          id: expect.any(Number),
-          createdAt: expect.any(String),
+        data: {
+          message: URL_ENCODED_SUCCESSFULLY,
+          data: {
+            url,
+            shortUrl: expect.stringMatching(new RegExp(`^${AppSettings.UrlBasePath}.{${AppSettings.UrlShortenerLength}}$`)),
+            visitCount: expect.any(Number),
+            id: expect.any(Number),
+            createdAt: expect.any(String),
+          },
         },
       });
     });
@@ -51,13 +53,15 @@ describe("URL Encoder Integration Tests", () => {
       expect(response1.body).toMatchObject({
         status: SUCCESS,
         statusCode: HttpStatusCodeEnum.SUCCESS,
-        message: URL_ENCODED_SUCCESSFULLY,
-        result: {
-          url,
-          shortUrl: expect.stringMatching(new RegExp(`^${AppSettings.UrlBasePath}.{${AppSettings.UrlShortenerLength}}$`)),
-          visitCount: expect.any(Number),
-          id: expect.any(Number),
-          createdAt: expect.any(String),
+        data: {
+          message: URL_ENCODED_SUCCESSFULLY,
+          data: {
+            url,
+            shortUrl: expect.stringMatching(new RegExp(`^${AppSettings.UrlBasePath}.{${AppSettings.UrlShortenerLength}}$`)),
+            visitCount: expect.any(Number),
+            id: expect.any(Number),
+            createdAt: expect.any(String),
+          },
         },
       });
 
@@ -68,13 +72,15 @@ describe("URL Encoder Integration Tests", () => {
       expect(response2.body).toMatchObject({
         status: SUCCESS,
         statusCode: HttpStatusCodeEnum.SUCCESS,
-        message: URL_ENCODED_SUCCESSFULLY,
-        result: {
-          url,
-          shortUrl: response1.body.result.shortUrl,
-          visitCount: expect.any(Number),
-          id: expect.any(Number),
-          createdAt: expect.any(String),
+        data: {
+          message: URL_ENCODED_SUCCESSFULLY,
+          data: {
+            url,
+            shortUrl: response1.body.data.data.shortUrl,
+            visitCount: expect.any(Number),
+            id: expect.any(Number),
+            createdAt: expect.any(String),
+          },
         },
       });
     });
@@ -89,6 +95,27 @@ describe("URL Encoder Integration Tests", () => {
         status: ERROR,
         statusCode: HttpStatusCodeEnum.BAD_REQUEST,
         details: expect.any(Array),
+      });
+    });
+
+    it("should not allow shortening an already shortened URL", async () => {
+      // First create a shortened URL
+      const originalUrl = "https://www.example.com/very/long/url/path";
+      const firstResponse = await request(server).post("/api/encode").send({ url: originalUrl });
+      const shortUrl = firstResponse.body.data.data.shortUrl;
+
+      // Try to shorten the shortened URL
+      const response = await request(server).post("/api/encode").send({ url: shortUrl });
+
+      expect(response.status).toBe(HttpStatusCodeEnum.BAD_REQUEST);
+      expect(response.body).toMatchObject({
+        status: ERROR,
+        statusCode: HttpStatusCodeEnum.BAD_REQUEST,
+        details: [
+          {
+            message: "Cannot shorten an already shortened URL",
+          },
+        ],
       });
     });
   });

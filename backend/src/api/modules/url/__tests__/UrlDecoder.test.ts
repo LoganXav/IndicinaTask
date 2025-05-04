@@ -25,7 +25,7 @@ describe("URL Decoder Integration Tests", () => {
     const url = "https://www.example.com/very/long/url/path";
     const createResponse = await request(server).post("/api/encode").send({ url });
     savedUrl = url;
-    savedShortUrl = createResponse.body.result.shortUrl;
+    savedShortUrl = createResponse.body.data.data.shortUrl;
   });
 
   describe("POST /api/decode", () => {
@@ -36,13 +36,15 @@ describe("URL Decoder Integration Tests", () => {
       expect(response.body).toMatchObject({
         status: SUCCESS,
         statusCode: HttpStatusCodeEnum.SUCCESS,
-        message: URL_DECODED_SUCCESSFULLY,
-        result: {
-          url: savedUrl,
-          shortUrl: savedShortUrl,
-          visitCount: expect.any(Number),
-          id: expect.any(Number),
-          createdAt: expect.any(String),
+        data: {
+          message: URL_DECODED_SUCCESSFULLY,
+          data: {
+            url: savedUrl,
+            shortUrl: savedShortUrl,
+            visitCount: expect.any(Number),
+            id: expect.any(Number),
+            createdAt: expect.any(String),
+          },
         },
       });
     });
@@ -52,12 +54,14 @@ describe("URL Decoder Integration Tests", () => {
 
       const response = await request(server).post("/api/decode").send({ shortUrl: nonExistentShortUrl });
 
-      expect(response.status).toBe(HttpStatusCodeEnum.BAD_REQUEST);
+      expect(response.status).toBe(HttpStatusCodeEnum.NOT_FOUND);
       expect(response.body).toMatchObject({
         status: ERROR,
-        statusCode: HttpStatusCodeEnum.BAD_REQUEST,
-        message: URL_NOT_FOUND,
-        result: null,
+        statusCode: HttpStatusCodeEnum.NOT_FOUND,
+        data: {
+          message: URL_NOT_FOUND,
+          data: null,
+        },
       });
     });
 
