@@ -14,10 +14,24 @@ export const UrlShortenerDecodeSchema = z.object({
     .url({ message: 'Invalid Short URL' }),
 });
 
+export const UrlStatisticSchema = z.object({
+  path: z.string().min(1, { message: 'Shortened URL path is required' }),
+});
+
+export const UrlShortenerRedirectSchema = z.object({
+  path: z.string().min(1, { message: 'URL path is required' }),
+});
+
+export type UrlShortenerEncodeRequestType = z.infer<
+  typeof UrlShortenerEncodeSchema
+>;
+
 export type UrlShortenerDecodeRequestType = z.infer<
   typeof UrlShortenerDecodeSchema
 >;
 
-export type UrlShortenerEncodeRequestType = z.infer<
-  typeof UrlShortenerEncodeSchema
+export type UrlStatisticRequestType = z.infer<typeof UrlStatisticSchema>;
+
+export type UrlShortenerRedirectRequestType = z.infer<
+  typeof UrlShortenerRedirectSchema
 >;

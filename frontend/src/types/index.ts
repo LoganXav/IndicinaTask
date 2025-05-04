@@ -4,6 +4,7 @@ export type UrlType = {
   shortUrl: string;
   createdAt: string;
   updatedAt: string;
+  visitCount: number;
 };
 
 export type UrlEncodeResponseType = {
@@ -20,7 +21,7 @@ export type UrlDecodeResponseType = {
   statusCode: number;
 };
 
-export type UrlStatisticsResponseType = {
+export type UrlStatisticResponseType = {
   data: UrlType;
   message: string;
   status: string;

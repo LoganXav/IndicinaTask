@@ -53,7 +53,7 @@ export function HomeUrlShortenerEncodeForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handle)}
-          className="space-y-4 w-fullmx-auto"
+          className="space-y-4 w-full mx-auto"
         >
           <FormField
             control={form.control}

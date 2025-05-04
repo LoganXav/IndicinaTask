@@ -13,9 +13,9 @@ import { toast } from '~/components/globals/toast';
 import { Input } from '~/components/globals/input';
 import { Button } from '~/components/globals/button';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useUrlDecodeMutation } from '~/apis/core-url-api';
 import { UrlShortenerDecodeSchema } from '~/features/home/home-url-shortener-schema';
 import { HomeUrlShortenerClipboard } from '~/features/home/home-url-shortener-clipboard';
-import { useUrlDecodeMutation } from '~/apis/core-url-api';
 
 export function HomeUrlShortenerDecodeForm() {
   const [urlEntry, setUrlEntry] = useState<UrlType | null>(null);
@@ -53,7 +53,7 @@ export function HomeUrlShortenerDecodeForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handle)}
-          className="space-y-4 w-fullmx-auto"
+          className="space-y-4 w-full mx-auto"
         >
           <FormField
             control={form.control}
