@@ -1,6 +1,7 @@
 import { cn } from '~/utils';
 import { Link, useLocation } from 'react-router-dom';
 import { ThemeToggler } from '~/components/theme-toggler';
+import { Typography } from '~/components/globals/typography';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -14,10 +15,12 @@ export function PageHeader() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-14 items-center">
         <div className="mr-4">
-          <Link to="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-display text-2xl font-extrabold">
-              ShortLink
-            </span>
+          <Link to="/">
+            <div className="text-start">
+              <Typography className="font-display" size={'h3'} weight={'bold'}>
+                Short<span className="text-blue-500">Link</span>
+              </Typography>
+            </div>
           </Link>
         </div>
 

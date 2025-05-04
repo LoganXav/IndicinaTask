@@ -38,7 +38,7 @@ export function HomeUrlShortenerClipboard({
       <Typography className="px-4 pt-4">{title}</Typography>
       <CardContent className="flex items-center gap-2 px-8">
         <Input
-          value={url}
+          value={url || ''}
           disabled={!url}
           readOnly
           className="text-sm cursor-pointer"

@@ -25,7 +25,7 @@ export function HomeUrlShortenerShortList() {
         retry={refetchUrlList}
       >
         {urlList != undefined && urlList?.data?.data?.length > 0 ? (
-          <Card className="space-y-0 p-4">
+          <Card className="space-y-2 p-4">
             {urlList?.data.data.slice(-3).map((url) => (
               <div
                 key={url.id}

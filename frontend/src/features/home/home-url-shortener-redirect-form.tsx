@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import {
   Form,
   FormControl,
@@ -5,17 +6,39 @@ import {
   FormItem,
   FormMessage,
 } from '~/components/globals/form';
+
 import { useForm } from 'react-hook-form';
 import { BACKEND_URL } from '~/config/http';
-import { Input } from '~/components/globals/input';
-import { Button } from '~/components/globals/button';
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   UrlShortenerRedirectRequestType,
   UrlShortenerRedirectSchema,
 } from '~/features/home/home-url-shortener-schema';
+import { Input } from '~/components/globals/input';
+import { useMemo, useState, useEffect } from 'react';
+import { Button } from '~/components/globals/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useGetUrlRedirectQuery } from '~/apis/core-url-api';
 
 export function HomeUrlShortenerRedirectForm() {
+  const [path, setPath] = useState<string>('');
+
+  const { data: redirectData, error: redirectError } = useGetUrlRedirectQuery(
+    useMemo(
+      () => ({
+        path: { urlPath: path },
+      }),
+      [path]
+    )
+  );
+
+  useEffect(() => {
+    if (redirectData) {
+      window.location.href = `${BACKEND_URL}/${path}`;
+    } else if (redirectError) {
+      toast.error(redirectError.message);
+    }
+  }, [redirectData, redirectError, path]);
+
   const defaultValues = {
     urlPath: '',
   };
@@ -27,7 +50,7 @@ export function HomeUrlShortenerRedirectForm() {
   });
 
   const handle = (data: UrlShortenerRedirectRequestType) => {
-    window.location.href = `${BACKEND_URL}/${data.urlPath}`;
+    setPath(data.urlPath);
   };
 
   return (

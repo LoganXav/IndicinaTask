@@ -10,6 +10,7 @@ import { HomeUrlShortenerEncodeForm } from '~/features/home/home-url-shortener-e
 import { HomeUrlShortenerDecodeForm } from '~/features/home/home-url-shortener-decode-form';
 import { HomeUrlShortenerRedirectForm } from '~/features/home/home-url-shortener-redirect-form';
 import { HomeUrlShortenerStatisticForm } from '~/features/home/home-url-shortener-statistic-form';
+import { Typography } from '~/components/globals/typography';
 
 export default function Home() {
   const formTabs = [
@@ -25,7 +26,7 @@ export default function Home() {
     },
     {
       value: 'statistic',
-      label: 'Statistic',
+      label: 'Statistics',
       component: <HomeUrlShortenerStatisticForm />,
     },
     {
@@ -37,7 +38,16 @@ export default function Home() {
 
   return (
     <div className="flex flex-col gap-10">
-      <div className="min-h-60"></div>
+      <div className="min-h-52 flex items-center justify-center">
+        <div className="text-center">
+          <Typography className="font-display" size={'h1'} weight={'bold'}>
+            Short<span className="text-blue-500">Link</span>
+          </Typography>
+          <Typography>
+            Transform long URLs into memorable links in seconds
+          </Typography>
+        </div>
+      </div>
 
       <Tabs
         defaultValue={formTabs[0].value}

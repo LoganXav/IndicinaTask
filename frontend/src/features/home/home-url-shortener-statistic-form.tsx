@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import { toast } from 'sonner';
-import { useMemo, useState } from 'react';
 import {
   Form,
   FormControl,
@@ -13,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import { Card } from '~/components/globals/card';
 import { Input } from '~/components/globals/input';
 import { Button } from '~/components/globals/button';
+import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Typography } from '~/components/globals/typography';
 import { LoadingContent } from '~/components/loading-content';
@@ -36,6 +36,14 @@ export function HomeUrlShortenerStatisticForm() {
     )
   );
 
+  useEffect(() => {
+    if (urlStatistics) {
+      toast.success(urlStatistics.data.message);
+    } else if (urlStatisticsError) {
+      toast.error(urlStatisticsError.message);
+    }
+  }, [urlStatistics, urlStatisticsError, path]);
+
   const defaultValues = {
     path: '',
   };
@@ -48,10 +56,6 @@ export function HomeUrlShortenerStatisticForm() {
 
   const handle = async (data: z.infer<typeof UrlStatisticSchema>) => {
     setPath(data.path);
-
-    if (urlStatisticsError) {
-      toast.error(urlStatisticsError.message);
-    }
   };
 
   return (
