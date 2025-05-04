@@ -2,10 +2,9 @@ import { QueryTagEnums } from '~/constants/query-tags';
 import { getRequest, postRequest } from '~/config/base-query';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  UrlDecodeResponseType,
-  UrlEncodeResponseType,
   UrlListResponseType,
-  UrlRedirectResponseType,
+  UrlEncodeResponseType,
+  UrlDecodeResponseType,
   UrlStatisticResponseType,
 } from '~/types';
 import {
@@ -53,6 +52,7 @@ export const useUrlEncodeMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.URL] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.URL_LIST] });
     },
   });
 
@@ -85,6 +85,7 @@ export const useUrlDecodeMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QueryTagEnums.URL] });
+      queryClient.invalidateQueries({ queryKey: [QueryTagEnums.URL_LIST] });
     },
   });
 
@@ -105,26 +106,6 @@ export const useGetUrlStatisticsQuery = ({
         config: {},
       });
     },
-    enabled: !!path.urlPath,
-  });
-
-  return { data, isLoading, error, refetch };
-};
-
-export const useGetUrlRedirectQuery = ({
-  path,
-}: {
-  path: { urlPath: string };
-}) => {
-  const { data, isLoading, error, refetch } = useQuery({
-    queryKey: [QueryTagEnums.URL],
-    queryFn: async () => {
-      return await getRequest<UrlRedirectResponseType>({
-        endpoint: `/${path.urlPath}`,
-        config: {},
-      });
-    },
-
     enabled: !!path.urlPath,
   });
 

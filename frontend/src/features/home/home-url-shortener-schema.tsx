@@ -19,7 +19,7 @@ export const UrlStatisticSchema = z.object({
 });
 
 export const UrlShortenerRedirectSchema = z.object({
-  path: z.string().min(1, { message: 'URL path is required' }),
+  urlPath: z.string().min(1, { message: 'Shortened URL path is required' }),
 });
 
 export type UrlShortenerEncodeRequestType = z.infer<
