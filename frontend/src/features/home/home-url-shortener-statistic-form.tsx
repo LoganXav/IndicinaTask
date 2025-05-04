@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
 import {
   Form,
   FormControl,
@@ -7,7 +8,6 @@ import {
   FormItem,
   FormMessage,
 } from '~/components/globals/form';
-import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { Card } from '~/components/globals/card';
 import { Input } from '~/components/globals/input';
@@ -42,7 +42,7 @@ export function HomeUrlShortenerStatisticForm() {
     } else if (urlStatisticsError) {
       toast.error(urlStatisticsError.message);
     }
-  }, [urlStatistics, urlStatisticsError, path]);
+  }, [urlStatistics, urlStatisticsError]);
 
   const defaultValues = {
     path: '',
@@ -110,6 +110,17 @@ export function HomeUrlShortenerStatisticForm() {
             </div>
 
             <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
+              <Typography>Status:</Typography>
+              <Typography color="muted">
+                {urlStatistics?.data?.data
+                  ? urlStatistics?.data?.data?.isActive
+                    ? 'Active'
+                    : 'Inactive'
+                  : '-'}
+              </Typography>
+            </div>
+
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
               <Typography>Visit Count:</Typography>
               <Typography color="muted">
                 {urlStatistics?.data?.data?.visitCount || '-'}
@@ -122,6 +133,18 @@ export function HomeUrlShortenerStatisticForm() {
                 {urlStatistics?.data?.data?.createdAt
                   ? format(
                       new Date(urlStatistics?.data?.data?.createdAt),
+                      'PPpp'
+                    )
+                  : '-'}
+              </Typography>
+            </div>
+
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-2">
+              <Typography>Last Visited At:</Typography>
+              <Typography color="muted">
+                {urlStatistics?.data?.data?.lastVisitedAt
+                  ? format(
+                      new Date(urlStatistics?.data?.data?.lastVisitedAt),
                       'PPpp'
                     )
                   : '-'}

@@ -11,6 +11,7 @@ import { debounce } from '~/utils';
 import { useMemo, useState } from 'react';
 import { Card } from '~/components/globals/card';
 import { Input } from '~/components/globals/input';
+import { Badge } from '~/components/globals/badge';
 import { useGetUrlListQuery } from '~/apis/core-url-api';
 import { LoadingContent } from '~/components/loading-content';
 import { DataTable } from '~/components/data-table/data-table';
@@ -39,6 +40,18 @@ export function ListUrlTable() {
       accessorKey: 'shortUrl',
     },
     {
+      header: 'Status',
+      accessorKey: 'isActive',
+      cell: ({ row }: { row: { original: UrlType } }) => {
+        const isActive = row.original.isActive;
+        return (
+          <Badge variant={isActive ? 'outline' : 'destructive'}>
+            {isActive ? 'Active' : 'Expired'}
+          </Badge>
+        );
+      },
+    },
+    {
       header: 'Visit Count',
       accessorKey: 'visitCount',
     },
@@ -48,6 +61,19 @@ export function ListUrlTable() {
       cell: ({ row }: { row: { original: UrlType } }) => {
         const date = row.original.createdAt;
         return format(new Date(date), 'PPpp');
+      },
+    },
+    {
+      header: 'Last Visited At',
+      accessorKey: 'lastVisitedAt',
+      cell: ({ row }: { row: { original: UrlType } }) => {
+        const date = row.original.lastVisitedAt;
+
+        if (date) {
+          return format(new Date(date), 'PPpp');
+        } else {
+          return '-';
+        }
       },
     },
   ];

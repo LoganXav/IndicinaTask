@@ -4,7 +4,9 @@ export type UrlType = {
   shortUrl: string;
   createdAt: string;
   updatedAt: string;
+  isActive: boolean;
   visitCount: number;
+  lastVisitedAt: string;
 };
 
 export type UrlEncodeResponseType = {
