@@ -9,6 +9,7 @@ class AppSettings {
   ServiceName: string;
   UrlBasePath: string;
   LoggingProvider: string;
+  UrlExpiryMinutes: number;
   UrlShortenerLength: number;
   DefaultHealthRemoteService: string;
 
@@ -20,6 +21,7 @@ class AppSettings {
     this.UrlBasePath = businessConfig.URL_BASE_PATH;
     this.ServiceName = serverConfig.Server.ServiceName;
     this.LoggingProvider = loggingConfig.LOGGING_PROVIDER;
+    this.UrlExpiryMinutes = businessConfig.URL_EXPIRTY_MINUTES;
     this.UrlShortenerLength = businessConfig.URL_SHORTENER_LENGTH;
     this.DefaultHealthRemoteService = serverConfig.Params.DefaultHealthRemoteService.Context;
   }

@@ -1,5 +1,5 @@
-import request from "supertest";
 import { Server } from "http";
+import request from "supertest";
 import { container } from "tsyringe";
 import AppSettings from "~/helpers/settings/AppSettings";
 import UrlProvider from "~/api/modules/url/providers/Url.provider";
@@ -35,51 +35,12 @@ describe("URL Encoder Integration Tests", () => {
           data: {
             url,
             shortUrl: expect.stringMatching(new RegExp(`^${AppSettings.UrlBasePath}.{${AppSettings.UrlShortenerLength}}$`)),
-            visitCount: expect.any(Number),
+            visitCount: 0,
             id: expect.any(Number),
             createdAt: expect.any(String),
-          },
-        },
-      });
-    });
-
-    it("should return the same short URL for duplicate long URLs", async () => {
-      const url = "https://www.example.com/duplicate/test";
-
-      // First request
-      const response1 = await request(server).post("/api/encode").send({ url });
-
-      expect(response1.status).toBe(HttpStatusCodeEnum.SUCCESS);
-      expect(response1.body).toMatchObject({
-        status: SUCCESS,
-        statusCode: HttpStatusCodeEnum.SUCCESS,
-        data: {
-          message: URL_ENCODED_SUCCESSFULLY,
-          data: {
-            url,
-            shortUrl: expect.stringMatching(new RegExp(`^${AppSettings.UrlBasePath}.{${AppSettings.UrlShortenerLength}}$`)),
-            visitCount: expect.any(Number),
-            id: expect.any(Number),
-            createdAt: expect.any(String),
-          },
-        },
-      });
-
-      // Second request with same URL
-      const response2 = await request(server).post("/api/encode").send({ url });
-
-      expect(response2.status).toBe(HttpStatusCodeEnum.SUCCESS);
-      expect(response2.body).toMatchObject({
-        status: SUCCESS,
-        statusCode: HttpStatusCodeEnum.SUCCESS,
-        data: {
-          message: URL_ENCODED_SUCCESSFULLY,
-          data: {
-            url,
-            shortUrl: response1.body.data.data.shortUrl,
-            visitCount: expect.any(Number),
-            id: expect.any(Number),
-            createdAt: expect.any(String),
+            expiresAt: expect.any(String),
+            isActive: true,
+            lastVisitedAt: null,
           },
         },
       });

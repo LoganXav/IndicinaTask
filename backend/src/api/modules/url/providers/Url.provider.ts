@@ -1,9 +1,12 @@
 export interface UrlEntry {
   id: number;
   url: string;
-  shortUrl: string;
   createdAt: Date;
+  expiresAt?: Date;
+  shortUrl: string;
+  isActive: boolean;
   visitCount: number;
+  lastVisitedAt: Date | null;
 }
 
 export default class UrlProvider {
@@ -32,10 +35,5 @@ export default class UrlProvider {
 
   public async getAll(): Promise<UrlEntry[]> {
     return Array.from(UrlProvider.store.values());
-  }
-
-  public async updateVisitCount(shortPath: string, entry: UrlEntry): Promise<void> {
-    entry.visitCount++;
-    UrlProvider.store.set(shortPath, entry);
   }
 }
