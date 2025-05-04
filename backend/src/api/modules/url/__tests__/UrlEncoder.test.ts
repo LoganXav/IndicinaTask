@@ -5,7 +5,7 @@ import AppSettings from "~/helpers/settings/AppSettings";
 import UrlProvider from "~/api/modules/url/providers/Url.provider";
 import { Application } from "~/infrastructure/internal/application";
 import { HttpStatusCodeEnum } from "~/helpers/enums/HttpStatusCodeEnums";
-import { SUCCESS, URL_ENCODED_SUCCESSFULLY, ERROR } from "~/helpers/messsges/SystemMessages";
+import { SUCCESS, URL_ENCODED_SUCCESSFULLY, ERROR, URL_CANNOT_SHORTEN } from "~/helpers/messsges/SystemMessages";
 
 describe("URL Encoder Integration Tests", () => {
   let server: Server;
@@ -113,7 +113,7 @@ describe("URL Encoder Integration Tests", () => {
         statusCode: HttpStatusCodeEnum.BAD_REQUEST,
         details: [
           {
-            message: "Cannot shorten an already shortened URL",
+            message: URL_CANNOT_SHORTEN,
           },
         ],
       });

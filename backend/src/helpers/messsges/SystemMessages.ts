@@ -20,3 +20,4 @@ export const URL_DECODED_SUCCESSFULLY = "Url decoded successfully";
 export const URL_REDIRECTED_SUCCESSFULLY = "Url redirected successfully";
 export const URL_LIST_FETCHED_SUCCESSFULLY = "Url list fetched successfully";
 export const URL_STATISTIC_FETCHED_SUCCESSFULLY = "Url statistic fetched successfully";
+export const URL_CANNOT_SHORTEN = "Cannot shorten an already shortened URL";
