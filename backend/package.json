@@ -14,7 +14,7 @@
     "dev": "ts-node-dev --respawn --transpile-only --no-notify -r tsconfig-paths/register src/index.ts",
     "docker:up": "docker build -t shortlink-backend . && docker run --rm -it -p 5500:5500 shortlink-backend",
     "docker:up:silent": "docker build -t shortlink-backend . && docker run -d --rm -it -p 5500:5500 shortlink-backend",
-    "docker:down": "docker stop shortlink-backend || true"
+    "docker:down": "docker stop $(docker ps -q --filter ancestor=shortlink-backend) || true"
   },
   "keywords": [],
   "author": "Sogbesan Timilehin",
