@@ -37,38 +37,7 @@ export function DataTablePagination<TData>({
             <span className="sr-only">Go to first page</span>
             <DoubleArrowLeftIcon className="h-4 w-4" />
           </Button>
-          {/* <Button */}
-          {/*   variant="ghost" */}
-          {/*   className="h-8 w-8 p-0 hover:text-primary" */}
-          {/*   onClick={() => table.previousPage()} */}
-          {/*   disabled={!table.getCanPreviousPage()} */}
-          {/* > */}
-          {/*   <span className="sr-only">Go to previous page</span> */}
-          {/*   <ArrowLeftIcon className="mr-2 h-3 w-3" /> */}
-          {/*   Previous */}
-          {/* </Button> */}
-          {/* {[2, 3, 4, 5, 6, 7].map((page) => ( */}
-          {/*   <Button */}
-          {/*     key={page} */}
-          {/*     size="page" */}
-          {/*     variant="ghost" */}
-          {/*     className="hidden h-8 w-14 p-0 hover:text-primary lg:flex" */}
-          {/*     onClick={() => table.setPageIndex(page - 1)} */}
-          {/*     disabled={!table.getCanNextPage()} */}
-          {/*   > */}
-          {/*     {page} */}
-          {/*   </Button> */}
-          {/* ))} */}
-          {/* <Button */}
-          {/*   variant="ghost" */}
-          {/*   className="h-8 w-8 p-0 hover:text-primary" */}
-          {/*   onClick={() => table.nextPage()} */}
-          {/*   disabled={!table.getCanNextPage()} */}
-          {/* > */}
-          {/*   Next */}
-          {/*   <span className="sr-only">Go to next page</span> */}
-          {/*   <ArrowRightIcon className="ml-2 h-3 w-3" /> */}
-          {/* </Button> */}
+
           <Button
             variant="ghost"
             className="h-8 w-8 p-0 hover:text-primary flex"

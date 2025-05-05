@@ -11,7 +11,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "docker:up": "docker build -t shortlink-frontend . && docker run --rm -it -p 3000:3000 shortlink-frontend",
+    "docker:up:silent": "docker build -t shortlink-frontend . && docker run -d --rm -p 3000:3000 shortlink-frontend",
+    "docker:down": "docker stop $(docker ps -q --filter ancestor=shortlink-frontend) || true"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
