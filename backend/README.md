@@ -273,6 +273,8 @@ URL_EXPIRTY_MINUTES=60  # Expiry time in minutes
 REMOTE_HEALTH_SERVICE="https://google.com"
 ```
 
+> **Note:** Default environment variables are already set in the application. You only need to override them if you want to customize the behavior.
+
 ## Testing
 
 The project includes comprehensive test coverage:
