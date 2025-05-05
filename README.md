@@ -12,6 +12,7 @@
   - [Running Tests](#running-tests)
   - [Folder Structure](#folder-structure)
   - [Documentation](#documentation)
+  - [Thoughts](#thoughts)
 
 ## Project Overview
 
@@ -140,3 +141,7 @@ shortlink/
 
 - **Backend API Reference:** [backend/README.md](backend/README.md)
 - **Frontend Guide:** [frontend/README.md](frontend/README.md)
+
+## Thoughts
+
+In a production environment, URL expiration should be significantly longer than the current 1-minute setting. The hypothetical implementation is to demonstrate the technical aspects of URL expiration handling, cache invalidation, and cleanup processes.
