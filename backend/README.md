@@ -9,8 +9,19 @@ This is the Node.js + Express backend API service powering the **ShortLink** URL
 - [Environment Variables](#environment-variables)
 - [Running the App](#running-the-app)
 - [API Reference](#api-reference)
+  - [Health Check](#health-check)
+  - [Encode URL](#encode-url)
+  - [Decode URL](#decode-url)
+  - [Get Statistics](#get-statistics)
+  - [List All URLs](#list-all-urls)
+  - [Redirect to Original URL](#redirect-to-original-url)
 - [Engineering Approach](#engineering-approach)
+  - [Data Validation](#data-validation)
+  - [Error Handling](#error-handling)
+  - [Dependency Injection](#dependency-injection)
 - [Testing](#testing)
+  - [Running Tests](#running-tests)
+  - [Test Coverage](#test-coverage)
 - [Folder Structure](#folder-structure)
 
 ## Project Overview
@@ -174,6 +185,7 @@ Response:
 
 ```
 GET /api/statistic/:path
+Content-Type: application/json
 
 Response:
 {
@@ -195,6 +207,7 @@ Response:
 
 ```
 GET /api/list
+Content-Type: application/json
 
 Response:
 {
@@ -275,6 +288,25 @@ Run tests with:
 npm run test           # Run all tests
 npm run test:coverage  # Run tests with coverage report
 ```
+
+### Current Test Coverage Summary
+
+```
+-----------------------------------------|---------|----------|---------|---------|
+File                                     | % Stmts | % Branch | % Funcs | % Lines |
+-----------------------------------------|---------|----------|---------|---------|
+All files                                |   86.50 |    69.51 |   73.68 |   86.96 |
+```
+
+Key coverage metrics:
+
+- URL Module (100% coverage):
+  - Controller: 100% statements, 100% branches
+  - Service: 100% statements, 100% branches
+  - Provider: 100% statements, 100% branches
+  - Validators: 100% statements, 100% branches
+- Error Handler: 100% statements, 100% branches
+- Base Controller: 72.72% statements, 70% branches
 
 ## Folder Structure
 
